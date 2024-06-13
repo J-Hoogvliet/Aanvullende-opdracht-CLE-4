@@ -1,13 +1,13 @@
 import { Actor, Color, CollisionType } from 'excalibur';
 import { Player } from './player.js'
 
-export class Cruise extends Actor{
+export class House extends Actor{
     constructor(x, y){
         super({
             x: x, 
             y: y,
-            width: 10,
-            height: 30,
+            width: 30,
+            height: 10,
             color: Color.Black,
         });
         this.body.collisionType = CollisionType.Fixed;
