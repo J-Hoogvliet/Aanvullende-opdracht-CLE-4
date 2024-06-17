@@ -1,7 +1,7 @@
 import { Actor, Color, CollisionType } from 'excalibur';
 import { Player } from './player.js'
 
-export class Cruise extends Actor{
+export class Path extends Actor{
     constructor(x, y){
         super({
             x: x, 

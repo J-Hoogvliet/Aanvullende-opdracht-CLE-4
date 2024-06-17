@@ -6,7 +6,7 @@ export class Sea extends Actor {
         super({
             x: x,
             y: y,
-            width: 1800,
+            width: 3000,
             height: 200,
             color: Color.Blue,
         });

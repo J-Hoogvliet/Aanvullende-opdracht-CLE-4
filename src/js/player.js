@@ -2,7 +2,7 @@ import { Actor, Color, Input, CollisionType } from 'excalibur';
 import { Resources, ResourceLoader } from './resources.js'
 
 export class Player extends Actor {
-    constructor(x, y) {
+    constructor(x, y, game) {
         super({
             x: x,
             y: y,
@@ -13,10 +13,11 @@ export class Player extends Actor {
         this.speed = 200;
         const sprite = Resources.Player.toSprite();
         this.graphics.use(sprite);
+        this.game = game;
         
     }
 
-    onInitialize(engine) {
+    onInitialize(engine, delta) {
         this.on('postupdate', () => {
             this.vel.x = 0;
             this.vel.y = 0;
@@ -33,7 +34,12 @@ export class Player extends Actor {
             if (engine.input.keyboard.isHeld(Input.Keys.D)) {
                 this.vel.x = this.speed;
             }
+          
+           
         });
+    
+};
+
     }
     
-}
+

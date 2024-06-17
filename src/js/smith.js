@@ -6,8 +6,8 @@ export class Smith extends Actor {
         super({
             x: x,
             y: y,
-            width: 20,
-            height: 20,
+            width: 80,
+            height: 80,
             color: Color.Green
         });
         this.type = type;

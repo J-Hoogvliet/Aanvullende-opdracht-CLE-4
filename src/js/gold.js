@@ -7,7 +7,7 @@ export class Gold extends Actor {
             y: y,
             width: 20,
             height: 20,
-            color: Color.Gold
+            color: Color.Yellow,
         });
         this.type = type;
         this.value = value;
