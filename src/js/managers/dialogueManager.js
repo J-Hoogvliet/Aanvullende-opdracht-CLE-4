@@ -6,7 +6,7 @@ export class DialogueManager {
         this.dialogues = [];
         this.currentDialogueIndex = 0;
         this.isActive = false;
-        
+        this.z = 99;
         // Dialogue box setup
         this.dialogueBox = new Actor({
             pos: new Vector(x, y),

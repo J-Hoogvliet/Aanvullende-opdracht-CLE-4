@@ -8,10 +8,12 @@ export class Player extends Actor {
             y: y,
             width: 50,
             height: 50,
-            collisionType: CollisionType.Active
+            collisionType: CollisionType.Active,
         });
+        this.z = 60;
         this.speed = 200;
         const sprite = Resources.Player.toSprite();
+        sprite.scale.setTo(0.5, 0.5);
         this.graphics.use(sprite);
         this.game = game;
         

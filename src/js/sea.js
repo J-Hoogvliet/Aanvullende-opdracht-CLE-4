@@ -2,13 +2,12 @@ import { Actor, Color, CollisionType } from 'excalibur';
 import { Player } from './player.js'
 
 export class Sea extends Actor {
-    constructor(x, y) {
+    constructor(x, y, width, height) {
         super({
             x: x,
             y: y,
-            width: 3000,
-            height: 200,
-            color: Color.Blue,
+            width: width,
+            height: height,
         });
         this.body.collisionType = CollisionType.Fixed;
         this.on('precollision', this.onPreCollision);
