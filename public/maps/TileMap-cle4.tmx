@@ -3,7 +3,7 @@
  <tileset firstgid="1" name="Grass" tilewidth="16" tileheight="16" tilecount="77" columns="11">
   <image source="Grass.png" width="176" height="112"/>
  </tileset>
- <tileset firstgid="78" name="Bitmask references gif" tilewidth="16" tileheight="16" tilecount="1089" columns="33">
+ <tileset firstgid="78" name="Bitmask_references_gif" tilewidth="16" tileheight="16" tilecount="1089" columns="33">
   <image source="Bitmask_references_gif.png" width="540" height="540"/>
  </tileset>
  <tileset firstgid="1167" name="Hills" tilewidth="16" tileheight="16" tilecount="77" columns="11">
@@ -21,16 +21,13 @@
  <tileset firstgid="3356" name="galletcity_tiles" tilewidth="16" tileheight="16" tilecount="40" columns="4">
   <image source="galletcity_tiles.png" width="64" height="168"/>
  </tileset>
- <!-- <tileset firstgid="3396" name="revolution" tilewidth="16" tileheight="16" tilecount="1024" columns="32">
+ <tileset firstgid="3396" name="revolution" tilewidth="16" tileheight="16" tilecount="1024" columns="32">
   <image source="revolution.png" width="512" height="512"/>
- </tileset> -->
- <!-- <tileset firstgid="4420" name="S-House_6" tilewidth="16" tileheight="16" tilecount="48" columns="8">
-  <image source="S-House_6.png" width="128" height="96"/>
- </tileset> -->
+ </tileset>
  <tileset firstgid="4468" name="PoliceStation" tilewidth="16" tileheight="16" tilecount="299" columns="23">
   <image source="PoliceStation.png" width="368" height="223"/>
  </tileset>
- <tileset firstgid="4767" name="PoliceStation (1)" tilewidth="16" tileheight="16" tilecount="345" columns="23">
+ <tileset firstgid="4767" name="PoliceStation(1)" tilewidth="16" tileheight="16" tilecount="345" columns="23">
   <image source="PoliceStation_1.png" width="369" height="245"/>
  </tileset>
  <tileset firstgid="5112" name="DarkRoad" tilewidth="16" tileheight="16" tilecount="60" columns="10">
@@ -42,23 +39,23 @@
  <tileset firstgid="5460" name="Bench" tilewidth="16" tileheight="16" tilecount="6" columns="3">
   <image source="Bench.png" width="52" height="37"/>
  </tileset>
- <tileset firstgid="5466" name="Frame 5" tilewidth="16" tileheight="16" tilecount="910" columns="65">
+ <tileset firstgid="5466" name="Frame5" tilewidth="16" tileheight="16" tilecount="910" columns="65">
   <image source="Frame_5.png" width="1040" height="224"/>
  </tileset>
- <tileset firstgid="6376" name="New Piskel-1.png" tilewidth="16" tileheight="16" tilecount="6" columns="2">
+ <tileset firstgid="6376" name="NewPiskel-1.png" tilewidth="16" tileheight="16" tilecount="6" columns="2">
   <image source="New_Piskel-1.png.png" width="32" height="48"/>
  </tileset>
- <tileset firstgid="6382" name="New Piskel-2.png" tilewidth="16" tileheight="16" tilecount="6" columns="2">
-  <image source="New Piskel-2.png.png" width="32" height="48"/>
+ <tileset firstgid="6382" name="NewPiskel-2.png" tilewidth="16" tileheight="16" tilecount="6" columns="2">
+  <image source="New_Piskel-2.png.png" width="32" height="48"/>
  </tileset>
  <tileset firstgid="6388" name="RowHouseTileSet" tilewidth="16" tileheight="16" tilecount="1024" columns="32">
   <image source="RowHouseTileSet.png" width="512" height="512"/>
  </tileset>
- <tileset firstgid="7412" name="Wooden House" tilewidth="16" tileheight="16" tilecount="35" columns="7">
+ <tileset firstgid="7412" name="WoodenHouse" tilewidth="16" tileheight="16" tilecount="35" columns="7">
   <image source="Wooden_House.png" width="112" height="80"/>
  </tileset>
- <tileset firstgid="7447" name="depositphotos_89255752-stock-illustration-ships-top-view-flat-icons" tilewidth="16" tileheight="16" tilecount="1332" columns="36">
-  <image source="depositphotos_89255752-stock-illustration-ships-top-view-flat-icons.png" width="582" height="600"/>
+ <tileset firstgid="7447" name="ships.jpg" tilewidth="16" tileheight="16" tilecount="1332" columns="36">
+  <image source="ships.jpg" width="582" height="600"/>
  </tileset>
  <layer id="1" name="Tile Layer 1" width="120" height="68">
   <data encoding="csv">

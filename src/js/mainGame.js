@@ -16,6 +16,9 @@ export class GameScene extends Scene {
   }
 
   onInitialize(engine) {
+    Resources.tiledMap.addToScene(this);
+    const initialZoomLevel = 2;
+    this.camera.zoom = initialZoomLevel;
     const player = new Player(engine.drawWidth / 2, engine.drawHeight / 2, this);
     this.player = player;
     engine.currentScene.camera.strategy.lockToActor(player);
@@ -23,26 +26,22 @@ export class GameScene extends Scene {
 
     
     const path = new Path(100, 300);
-    const house = new House(500, 100);
-    const sea = new Sea(960, 1000);
-    const smith = new Smith(700, 200);
+    const house = new House(1096,219);
+    const sea = new Sea(960, 1050, 3000, 200);
+    const sea1 = new Sea(0, 850, 700, 3000);
+    const sea2 = new Sea(1930,945, 1000, 1250);
+    const sea3 = new Sea(1985,315, 500, 800);
 
     this.add(path);
-    this.add(smith);
     this.add(house);
     this.add(sea);
+    this.add(sea1);
+    this.add(sea2);
+    this.add(sea3);
     this.add(player);
+
+  
     
-
-    // Borders
-    const leftBorder = new Border(0, engine.drawHeight / 2, 10, engine.drawHeight);
-    const rightBorder = new Border(1440, engine.drawHeight / 2, 10, engine.drawHeight);
-    const topBorder = new Border(engine.drawWidth / 2, 0, engine.drawWidth, 10);
-
-    this.add(leftBorder);
-    this.add(rightBorder);
-    this.add(topBorder);
-    Resources.tiledMap.addToScene(this);
 
     const dialoguesStart = [
       "Welkom bij de game!",
