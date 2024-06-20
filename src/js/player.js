@@ -1,6 +1,7 @@
 import { Actor, Input, CollisionType } from 'excalibur';
 import { Resources } from './resources.js'; // Adjust import path as necessary
 import { DialogueManager } from './managers/dialogueManager.js';
+import { GameScene } from './mainGame.js';
 
 export class Player extends Actor {
     constructor(x, y, game) {
@@ -14,7 +15,7 @@ export class Player extends Actor {
         this.z = 60;
         this.speed = 100;
         const sprite = Resources.Player.toSprite(); // Assuming Resources.Player is defined properly
-        sprite.scale.setTo(0.03, 0.03);
+        sprite.scale.setTo(0.5, 0.5);
         this.graphics.use(sprite);
         this.game = game;
         this.canFish = false; // Flag to determine if player can fish
@@ -52,49 +53,68 @@ export class Player extends Actor {
         if (this.canFish) {
             const outcomes = ['trash', 'nothing', 'gold'];
             const randomOutcome = outcomes[Math.floor(Math.random() * outcomes.length)];
-
+            const dialogueManager = new DialogueManager(this.pos.x - 50, this.pos.y + 200, this.game);
             switch (randomOutcome) {
                 case 'trash':
-                    // Display dialogue when catching trash
-                    const dialogueManager = new DialogueManager(this.pos.x - 50, this.pos.y + 200, this.game); // Pass game instance
-                    const dialogues = ['Je hebt afval gevangen!'];
-                    dialogueManager.start(dialogues);
-
-                    // Handle space key press to advance dialogue
-                    this.game.input.keyboard.on('press', (evt) => {
-                        if (evt.key === Input.Keys.Space || evt.key === Input.Keys.W || evt.key === Input.Keys.S && dialogueManager.isActive) {
-                            dialogueManager.nextDialogue();
-                        }
-                    });
+                    this.removeGold()
+                    dialogueManager.catchItem('trash')
                     break;
                 case 'nothing':
+                    dialogueManager.catchItem('nothing')
                     // Display dialogue when catching Nothing
-                    const dialoguesManager = new DialogueManager(this.pos.x - 50, this.pos.y + 200, this.game); // Pass game instance
-                    const dialoguess = ['Je hebt niks gevangen!'];
-                    dialoguesManager.start(dialoguess);
+                    // const dialoguesManager = new DialogueManager(this.pos.x - 50, this.pos.y + 200, this.game); // Pass game instance
+                    // const dialoguess = ['Je hebt niks gevangen!'];
+                    // dialoguesManager.start(dialoguess);
 
-                    // Handle space key press to advance dialogue
-                    this.game.input.keyboard.on('press', (evt) => {
-                        if (evt.key === Input.Keys.Space || evt.key === Input.Keys.W || evt.key === Input.Keys.S && dialoguesManager.isActive) {
-                            dialoguesManager.nextDialogue();
-                        }
-                    });
+                    // // Handle space key press to advance dialogue
+                    // this.game.input.keyboard.on('press', (evt) => {
+                    //     if (evt.key === Input.Keys.Space || evt.key === Input.Keys.W || evt.key === Input.Keys.S && dialoguesManager.isActive) {
+                    //         dialoguesManager.nextDialogue();
+                    //     }
+                    // });
                     break;
                 case 'gold':
-                    const dialoguessManager = new DialogueManager(this.pos.x - 50, this.pos.y + 200, this.game); // Pass game instance
-                    const dialoguesss = ['Je hebt niks gevangen!'];
-                    dialoguessManager.start(dialoguesss);
+                    this.addGold()
+                    dialogueManager.catchItem('gold')
+                    // const dialoguessManager = new DialogueManager(this.pos.x - 50, this.pos.y + 200, this.game); // Pass game instance
+                    // const dialoguesss = ['Je hebt goud gevangen!'];
+                    // dialoguessManager.start(dialoguesss);
 
-                    // Handle space key press to advance dialogue
-                    this.game.input.keyboard.on('press', (evt) => {
-                        if (evt.key === Input.Keys.Space || evt.key === Input.Keys.W || evt.key === Input.Keys.S && dialoguessManager.isActive) {
-                            dialoguessManager.nextDialogue();
-                        }
-                    });
+                    // // Handle space key press to advance dialogue
+                    // this.game.input.keyboard.on('press', (evt) => {
+                    //     if (evt.key === Input.Keys.Space || evt.key === Input.Keys.W || evt.key === Input.Keys.S && dialoguessManager.isActive) {
+                    //         dialoguessManager.nextDialogue();
+                    //     }
+                    // });
                     break;
             }
         } else {
             console.log('Je kan hier niet vissen, ei');
         }
+    }
+    addGold(){
+        const scene = this.scene;
+        if (scene instanceof GameScene) {
+            scene.ui?.addPoint();
+        } else {
+            console.warn("addPoint method not found on engine");
+        }
+    }
+
+    removeGold(){
+        const scene = this.scene;
+        if (scene instanceof GameScene) {
+            scene.ui?.removePoint();
+        } else {
+            console.warn("removePoint method not found on engine");
+        }
+    }
+
+    addCash(gold){
+
+    }
+
+    removeCash(amount){
+        
     }
 }

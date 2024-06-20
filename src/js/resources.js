@@ -2,7 +2,7 @@ import { ImageSource, Loader } from 'excalibur';
 import { TiledResource } from '@excaliburjs/plugin-tiled';
 
 const Resources = {
-  Player: new ImageSource('images/test.png'),
+  Player: new ImageSource('images/Storm-forw.png'),
   tiledMap: new TiledResource('maps/TileMap-cle4.tmx')
   // Add other resources here if needed
 };

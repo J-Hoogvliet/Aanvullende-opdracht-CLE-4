@@ -7,18 +7,19 @@ export class DialogueManager {
         this.currentDialogueIndex = 0;
         this.isActive = false;
         this.z = 99;
+        this.scene = this.game.currentScene;
         // Dialogue box setup
         this.dialogueBox = new Actor({
             pos: new Vector(x, y),
-            width: 490,
-            height: 80,
+            width: 100,
+            height: 20,
             color: Color.Gray
         });
         
         // Dialogue text setup
         this.dialogueText = new Label({
-            pos: new Vector(x - 200, y - 10),
-            font: new Font({ size: 24, unit: FontUnit.Px }),
+            pos: new Vector(x - 100, y - 5),
+            font: new Font({ size: 16, unit: FontUnit.Px }),
             text: '',
             color: Color.White
         });
@@ -31,9 +32,9 @@ export class DialogueManager {
         this.showDialogue();
     }
     
-    showDialogue() {
+    showDialogue(text) {
         if (this.currentDialogueIndex < this.dialogues.length) {
-            this.dialogueText.text = this.dialogues[this.currentDialogueIndex];
+            this.dialogueText.text = text;
             if (this.game) {
                 this.game.add(this.dialogueBox); // Add dialogue box to game
                 this.game.add(this.dialogueText); // Add dialogue text to game
@@ -57,4 +58,8 @@ export class DialogueManager {
             this.game.remove(this.dialogueText); // Remove dialogue text from game
         }
     }
+    catchItem(itemName) {
+        this.scene.ui.updateCatchLabel(itemName); // Update the catch label
+        this.showDialogue(`You caught a ${itemName}!`); // Show a dialogue message
+  }
 }

@@ -8,15 +8,14 @@ export class SeaBorder extends Actor {
             y: y,
             width: width,
             height: height,
-            color: Color.Black,
         });
-        this.body.collisionType = CollisionType.Passive; // Set collision type to Passive
-        this.on('precollision', this.onPreCollision.bind(this)); // Bind the event handler
+        this.body.collisionType = CollisionType.Passive; 
+        this.on('precollision', this.onPreCollision.bind(this)); 
     }
 
     onPreCollision(evt) {
         if (evt.other instanceof Player) {
-            console.log("You can fish here");
+            // console.log("You can fish here");
         }
     }
 }

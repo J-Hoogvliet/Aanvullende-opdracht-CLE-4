@@ -1,23 +1,23 @@
-import { GameScene } from './mainGame.js';
 import { Engine } from 'excalibur';
-import { ResourceLoader, Resources } from './resources.js';
+import { ResourceLoader } from './resources.js';
+import { GameScene } from './mainGame.js';
+import { UI } from './ui.js';
 
 export class Game extends Engine {
-  constructor() {
-    super({
-      width: 1440,
-      height: 900,
-      fixedUpdateFps: 60,
-    });
+    constructor() {
+        super({
+            width: 1440,
+            height: 900,
+            fixedUpdateFps: 60,
+        });
+        this.start(ResourceLoader).then(() => this.startGame());
+    }
 
-    this.start(ResourceLoader).then(() => this.startGame());
-  }
-
- startGame() {
-    const gameScene = new GameScene();
-    this.addScene('GameScene', gameScene);
-    this.goToScene('GameScene');
-}
+    startGame() {
+        const gameScene = new GameScene();
+        this.addScene('GameScene', gameScene);
+        this.goToScene('GameScene');
+    }
 }
 
 new Game();

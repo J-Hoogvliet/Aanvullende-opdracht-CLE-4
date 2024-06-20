@@ -14,7 +14,7 @@ export class Sea extends Actor {
     }
     onPreCollision(evt) {
         if (evt.other instanceof Player) {
-            console.log("U heeft de zee geraakt");
+            // console.log("U heeft de zee geraakt");
         }
     }
 }

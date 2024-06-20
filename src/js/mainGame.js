@@ -1,15 +1,16 @@
-import { BoundingBox, Input, Scene } from 'excalibur';
+import { BoundingBox, Font, FontUnit, Input, Label, Scene, Vector } from 'excalibur';
 import { Player } from './player.js';
 import { SeaBorder } from './seaBorder.js';
 import { House } from './house.js';
 import { Sea } from './sea.js';
 import { Border } from './border.js';
 import { Resources } from './resources.js';
+import { UI } from './ui.js';
+import { DialogueManager } from './managers/dialogueManager.js'; // Import DialogManager
 
 export class GameScene extends Scene {
     constructor() {
         super();
-        this.dialogueManager = null;
     }
 
     onInitialize(engine) {
@@ -32,11 +33,10 @@ export class GameScene extends Scene {
         const border = new Border(0, -20, 5000, 10, this);
 
         // Create sea borders
-
-        const seaBorder = new SeaBorder(960, 1050, 3000, 200);
-        const seaBorder1 = new SeaBorder(0, 850, 600, 3000);
-        const seaBorder2 = new SeaBorder(1930, 945, 1000, 1250);
-        const seaBorder3 = new SeaBorder(1985, 315, 440, 800);
+        const seaBorder = new SeaBorder(960, 1050, 3040, 220);
+        const seaBorder1 = new SeaBorder(0, 850, 620, 3020);
+        const seaBorder2 = new SeaBorder(1930, 945, 1040, 1250);
+        const seaBorder3 = new SeaBorder(1985, 315, 480, 800);
 
         // Add elements to the scene
         this.add(house);
@@ -50,6 +50,9 @@ export class GameScene extends Scene {
         this.add(seaBorder1);
         this.add(seaBorder2);
         this.add(seaBorder3);
+
+        this.ui = new UI();
+        this.add(this.ui);
 
         // Event listener for keyboard input
         this.engine.input.keyboard.on('press', (event) => {
@@ -70,5 +73,14 @@ export class GameScene extends Scene {
                 player.disableFishing(); // Disable fishing when not colliding with SeaBorder
             }
         });
+
+        // Event listener for player collision with House
+        player.on('collisionstart', (evt) => {
+            if (evt.other instanceof House) {
+                 // Show dialog when colliding with House
+            }
+        });
     }
 }
+
+
