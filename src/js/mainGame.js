@@ -1,63 +1,74 @@
-import { BoundingBox, Input, Loader, Scene } from 'excalibur';
+import { BoundingBox, Input, Scene } from 'excalibur';
 import { Player } from './player.js';
-import { Path } from './path.js';
-import { Sea } from './sea.js';
-import { Background } from './background.js';
+import { SeaBorder } from './seaBorder.js';
 import { House } from './house.js';
-import { Smith } from './smith.js';
+import { Sea } from './sea.js';
 import { Border } from './border.js';
-import { DialogueManager } from './managers/dialogueManager.js';
 import { Resources } from './resources.js';
 
 export class GameScene extends Scene {
-  constructor() {
-    super();
-    this.dialogueManager = null;
-  }
+    constructor() {
+        super();
+        this.dialogueManager = null;
+    }
 
-  onInitialize(engine) {
-    Resources.tiledMap.addToScene(this);
-    const initialZoomLevel = 2;
-    this.camera.zoom = initialZoomLevel;
-    const player = new Player(engine.drawWidth / 2, engine.drawHeight / 2, this);
-    this.player = player;
-    engine.currentScene.camera.strategy.lockToActor(player);
-    engine.currentScene.camera.strategy.limitCameraBounds(new BoundingBox(0, 0, 1980, 1088));
+    onInitialize(engine) {
+        Resources.tiledMap.addToScene(this);
+        const initialZoomLevel = 2;
+        this.camera.zoom = initialZoomLevel;
 
-    
-    const path = new Path(100, 300);
-    const house = new House(1096,219);
-    const sea = new Sea(960, 1050, 3000, 200);
-    const sea1 = new Sea(0, 850, 700, 3000);
-    const sea2 = new Sea(1930,945, 1000, 1250);
-    const sea3 = new Sea(1985,315, 500, 800);
+        // Initialize and position player
+        const player = new Player(engine.drawWidth / 2, engine.drawHeight / 2, this);
+        this.player = player;
+        engine.currentScene.camera.strategy.lockToActor(player);
+        engine.currentScene.camera.strategy.limitCameraBounds(new BoundingBox(0, 0, 1980, 1088));
 
-    this.add(path);
-    this.add(house);
-    this.add(sea);
-    this.add(sea1);
-    this.add(sea2);
-    this.add(sea3);
-    this.add(player);
+        // Create game elements
+        const house = new House(1096, 219);
+        const sea = new Sea(960, 1050, 3000, 200);
+        const sea1 = new Sea(0, 850, 600, 3000);
+        const sea2 = new Sea(1930, 945, 1000, 1250);
+        const sea3 = new Sea(1985, 315, 440, 800);
+        const border = new Border(0, -20, 5000, 10, this);
 
-  
-    
+        // Create sea borders
 
-    const dialoguesStart = [
-      "Welkom bij de game!",
-      "Ga vissen voor goud.",
-      "Smelt het goud om bij de smid.",
-      "En vergok het vervolgens bij het Casino.",
-      "hoe meer meer je gokt hoe meer punten je kan krijgen."
-    ];
+        const seaBorder = new SeaBorder(960, 1050, 3000, 200);
+        const seaBorder1 = new SeaBorder(0, 850, 600, 3000);
+        const seaBorder2 = new SeaBorder(1930, 945, 1000, 1250);
+        const seaBorder3 = new SeaBorder(1985, 315, 440, 800);
 
-    this.dialogueManager = new DialogueManager(800, 440, this);
-    this.dialogueManager.start(dialoguesStart);
+        // Add elements to the scene
+        this.add(house);
+        this.add(sea);
+        this.add(sea1);
+        this.add(sea2);
+        this.add(sea3);
+        this.add(border);
+        this.add(player);
+        this.add(seaBorder);
+        this.add(seaBorder1);
+        this.add(seaBorder2);
+        this.add(seaBorder3);
 
-      this.engine.input.keyboard.on('press', (evt) => {
-  if (evt.key === Input.Keys.Space && this.dialogueManager?.isActive) {
-      this.dialogueManager?.nextDialogue();
-    };
-});
-  }
+        // Event listener for keyboard input
+        this.engine.input.keyboard.on('press', (event) => {
+            if (event.key === Input.Keys.Enter) {
+                player.fish(); // Trigger fishing action on Enter key press
+            }
+        });
+
+        // Event listener for player collision with SeaBorder
+        player.on('collisionstart', (evt) => {
+            if (evt.other instanceof SeaBorder) {
+                player.enableFishing(); // Enable fishing when colliding with SeaBorder
+            }
+        });
+
+        player.on('collisionend', (evt) => {
+            if (evt.other instanceof SeaBorder) {
+                player.disableFishing(); // Disable fishing when not colliding with SeaBorder
+            }
+        });
+    }
 }

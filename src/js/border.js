@@ -6,7 +6,8 @@ export class Border extends Actor {
             pos: new Vector(x,y),
             width: width,
             height: height,
-            collisionType: CollisionType.Fixed 
+            collisionType: CollisionType.Fixed
+          
         });
     }
 }
