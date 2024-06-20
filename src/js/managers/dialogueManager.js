@@ -1,4 +1,4 @@
-import { Actor, Color, Font, FontUnit, Label, Vector, Engine } from "excalibur";
+import { Actor, Color, Font, FontUnit, Label, Vector, Engine, } from "excalibur";
 
 export class DialogueManager {
     constructor(x, y, game) {
@@ -7,7 +7,6 @@ export class DialogueManager {
         this.currentDialogueIndex = 0;
         this.isActive = false;
         this.z = 99;
-        this.scene = this.game.currentScene;
         // Dialogue box setup
         this.dialogueBox = new Actor({
             pos: new Vector(x, y),
@@ -58,8 +57,4 @@ export class DialogueManager {
             this.game.remove(this.dialogueText); // Remove dialogue text from game
         }
     }
-    catchItem(itemName) {
-        this.scene.ui.updateCatchLabel(itemName); // Update the catch label
-        this.showDialogue(`You caught a ${itemName}!`); // Show a dialogue message
-  }
 }

@@ -51,7 +51,7 @@ export class GameScene extends Scene {
         this.add(seaBorder2);
         this.add(seaBorder3);
 
-        this.ui = new UI();
+        this.ui = new UI(this);
         this.add(this.ui);
 
         // Event listener for keyboard input

@@ -2,6 +2,7 @@ import { Actor, Input, CollisionType } from 'excalibur';
 import { Resources } from './resources.js'; // Adjust import path as necessary
 import { DialogueManager } from './managers/dialogueManager.js';
 import { GameScene } from './mainGame.js';
+import { UI } from './ui.js';
 
 export class Player extends Actor {
     constructor(x, y, game) {
@@ -28,14 +29,26 @@ export class Player extends Actor {
 
             if (engine.input.keyboard.isHeld(Input.Keys.W)) {
                 this.vel.y = -this.speed;
+                const sprite = Resources.Player_back.toSprite();
+                sprite.scale.setTo(0.5, 0.5);
+                this.graphics.use(sprite);
             }
             if (engine.input.keyboard.isHeld(Input.Keys.S)) {
+                const sprite = Resources.Player.toSprite();
+                sprite.scale.setTo(0.5, 0.5);
+                this.graphics.use(sprite);
                 this.vel.y = this.speed;
             }
             if (engine.input.keyboard.isHeld(Input.Keys.A)) {
+                 const sprite = Resources.Player_left.toSprite();
+                sprite.scale.setTo(0.5, 0.5);
+                this.graphics.use(sprite);
                 this.vel.x = -this.speed;
             }
             if (engine.input.keyboard.isHeld(Input.Keys.D)) {
+                const sprite = Resources.Player_right.toSprite();
+                sprite.scale.setTo(0.5, 0.5);
+                this.graphics.use(sprite);
                 this.vel.x = this.speed;
             }
         });
@@ -49,49 +62,38 @@ export class Player extends Actor {
         this.canFish = false; // Disable fishing
     }
 
-    fish() {
-        if (this.canFish) {
-            const outcomes = ['trash', 'nothing', 'gold'];
-            const randomOutcome = outcomes[Math.floor(Math.random() * outcomes.length)];
-            const dialogueManager = new DialogueManager(this.pos.x - 50, this.pos.y + 200, this.game);
+   fish() {
+    if (this.canFish) {
+        const outcomes = ['trash', 'nothing', 'gold'];
+        const randomOutcome = outcomes[Math.floor(Math.random() * outcomes.length)];
+        
+        const scene = this.scene;
+        const ui = scene?.ui;
+
+        if (ui) {
             switch (randomOutcome) {
                 case 'trash':
-                    this.removeGold()
-                    dialogueManager.catchItem('trash')
+                    this.removeGold();
+                    ui.caught.changeSprite('trash');
+                    ui.changeText('Trash');
                     break;
                 case 'nothing':
-                    dialogueManager.catchItem('nothing')
-                    // Display dialogue when catching Nothing
-                    // const dialoguesManager = new DialogueManager(this.pos.x - 50, this.pos.y + 200, this.game); // Pass game instance
-                    // const dialoguess = ['Je hebt niks gevangen!'];
-                    // dialoguesManager.start(dialoguess);
-
-                    // // Handle space key press to advance dialogue
-                    // this.game.input.keyboard.on('press', (evt) => {
-                    //     if (evt.key === Input.Keys.Space || evt.key === Input.Keys.W || evt.key === Input.Keys.S && dialoguesManager.isActive) {
-                    //         dialoguesManager.nextDialogue();
-                    //     }
-                    // });
+                     ui.changeText('Niks');
+                     ui.caught.changeSprite('nothing');
                     break;
                 case 'gold':
-                    this.addGold()
-                    dialogueManager.catchItem('gold')
-                    // const dialoguessManager = new DialogueManager(this.pos.x - 50, this.pos.y + 200, this.game); // Pass game instance
-                    // const dialoguesss = ['Je hebt goud gevangen!'];
-                    // dialoguessManager.start(dialoguesss);
-
-                    // // Handle space key press to advance dialogue
-                    // this.game.input.keyboard.on('press', (evt) => {
-                    //     if (evt.key === Input.Keys.Space || evt.key === Input.Keys.W || evt.key === Input.Keys.S && dialoguessManager.isActive) {
-                    //         dialoguessManager.nextDialogue();
-                    //     }
-                    // });
+                    this.addGold();
+                    ui.changeText('Goud');
+                    ui.caught.changeSprite('gold');
                     break;
             }
         } else {
-            console.log('Je kan hier niet vissen, ei');
+            console.error('UI is not available in the current scene.');
         }
+    } else {
+        console.log('Je kan hier niet vissen, ei');
     }
+}
     addGold(){
         const scene = this.scene;
         if (scene instanceof GameScene) {
