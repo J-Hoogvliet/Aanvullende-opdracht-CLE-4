@@ -4,6 +4,7 @@ import { GameScene } from './mainGame.js';
 import { BeginScene } from './BeginScene.js';
 import { OptionsScene } from './OptionsScene.js';
 import { IntroScene } from './IntroScene.js';
+import { smithScene } from './smithScene.js';
 
 export class Game extends Engine {
     constructor() {
@@ -12,7 +13,6 @@ export class Game extends Engine {
             height: 900,
             fixedUpdateFps: 60,
             backgroundColor: Color.White
-
         });
 
         this.backgroundMusic = Resources.Muziek;
@@ -50,6 +50,10 @@ export class Game extends Engine {
         if (!this.scenes['Intro']) {
             const introSceneInstance = new IntroScene(this);
             this.addScene('Intro', introSceneInstance);
+        }
+          if (!this.scenes['smith']) {
+            const SmithScene = new smithScene(this);
+            this.addScene('smith', SmithScene);
         }
     }
 }

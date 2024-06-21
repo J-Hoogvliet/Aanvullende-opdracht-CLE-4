@@ -63,7 +63,7 @@ export class UI extends ScreenElement {
 
     onPreUpdate(game) {
     // Check if the player has caught 10 goldfish and the message hasn't been logged yet
-    if (this.goldfish === 5 && this.hasLoggedMessage === false) {
+    if (this.goldfish === 1 && this.hasLoggedMessage === false) {
         try {
             // Debug: Check the game instance and goldfish count
             console.log('Goldfish count:', this.goldfish);
@@ -72,7 +72,7 @@ export class UI extends ScreenElement {
             this.goldLabel.text = `Goldfish: ${this.goldfish}`;
 
             // Create an instance of DialogueManager with specified coordinates and the game instance
-            const dialogueManager = new DialogueManager(720, 800, this.game);
+            const dialogueManager = new DialogueManager(1000, 800, this.game);
 
             // Define the dialogue messages
             const dialogues = [

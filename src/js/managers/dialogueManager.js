@@ -1,4 +1,5 @@
-import { Actor, Color, Font, FontUnit, Label, Vector, Engine } from "excalibur";
+import { Actor, Color, Font, FontUnit, Label, Vector } from "excalibur";
+import { Resources } from "../resources";
 
 export class DialogueManager {
     constructor(x, y, game) {
@@ -6,41 +7,55 @@ export class DialogueManager {
         this.dialogues = [];
         this.currentDialogueIndex = 0;
         this.isActive = false;
+
         // Dialogue box setup
         this.dialogueBox = new Actor({
             pos: new Vector(x, y),
-            width: 300, // Adjusted for better visibility
-            height: 50, // Adjusted for better visibility
-            color: Color.Gray
+            color: Color.Transparent // Start with transparent color
         });
         
+
         // Dialogue text setup
         this.dialogueText = new Label({
-            pos: new Vector(x - 140, y ), // Adjusted for better positioning
+            pos: new Vector(x - 140, y), // Adjusted for better positioning
             font: new Font({ size: 16, unit: FontUnit.Px }),
             text: '',
             color: Color.White
         });
 
-        this.dialogueBox.z = 1000;
-        this.dialogueText.z = 1000;
+        this.dialogueBox.z = 1000; // Ensure dialogue box is in front
+        this.dialogueText.z = 1001; // Ensure dialogue text is in front of box
     }
-    
-    start(dialogues) {
+
+     start(dialogues) {
         this.dialogues = dialogues;
         this.currentDialogueIndex = 0;
         this.isActive = true;
-        this.showDialogue();
+        this.showDialogue(); // Wait for dialogue to show initially
     }
-    
-    showDialogue() {
+
+     showDialogue() {
         if (this.currentDialogueIndex < this.dialogues.length) {
             this.dialogueText.text = this.dialogues[this.currentDialogueIndex];
             if (this.game) {
-                this.game.add(this.dialogueBox); // Add dialogue box to game
-                this.game.add(this.dialogueText); // Add dialogue text to game
-                console.log('Dialogue box position:', this.dialogueBox.pos);
-                console.log('Dialogue text position:', this.dialogueText.pos);
+                try {
+                    const sprite =  Resources.Textbox.toSprite(); // Load sprite asynchronously
+
+                    if (!sprite) {
+                        throw new Error('Failed to load sprite from Resources.Textbox');
+                    }
+                    this.dialogueBox.graphics.use(sprite);
+
+                    this.game.add(this.dialogueBox); // Add dialogue box to game
+                    this.game.add(this.dialogueText); // Add dialogue text to game
+
+                    console.log('Sprite used:', sprite.image.path);
+                    console.log('graphic used:', this.dialogueBox.graphics);
+                    console.log('Dialogue box position:', this.dialogueBox.pos.toString());
+                    console.log('Dialogue text position:', this.dialogueText.pos.toString());
+                } catch (error) {
+                    console.error('Error loading or using sprite:', error);
+                }
             } else {
                 console.error('Game instance is not defined.');
             }
@@ -48,12 +63,12 @@ export class DialogueManager {
             this.endDialogue();
         }
     }
-    
+
     nextDialogue() {
         this.currentDialogueIndex++;
-        this.showDialogue();
+        this.showDialogue(); // No need to await here
     }
-    
+
     endDialogue() {
         this.isActive = false;
         if (this.game) {

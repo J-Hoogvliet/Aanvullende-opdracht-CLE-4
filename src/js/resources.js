@@ -19,6 +19,8 @@ const Resources = {
     HomeSelect: new ImageSource('images/homeselect.png'),
     Bus: new ImageSource('images/buszwart.png'),
     Muziek: new Audio('images/muziek.ogg'),
+    Textbox: new ImageSource('images/textbox.png'),
+    Smith: new ImageSource('images/Smid_scene.png'),
   // Add other resources here if needed
 };
 
@@ -38,7 +40,9 @@ const ResourceLoader = new Loader([
   Resources.OptionsSelect,
   Resources.Home,
   Resources.HomeSelect,
-  Resources.Bus
+  Resources.Bus,
+  Resources.Textbox,
+  Resources.Smith
 ]);
 
 export { Resources, ResourceLoader };
