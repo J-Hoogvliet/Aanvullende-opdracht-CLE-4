@@ -1,4 +1,4 @@
-import { Actor, Color, Font, FontUnit, Label, Vector, Engine, } from "excalibur";
+import { Actor, Color, Font, FontUnit, Label, Vector, Engine } from "excalibur";
 
 export class DialogueManager {
     constructor(x, y, game) {
@@ -6,22 +6,24 @@ export class DialogueManager {
         this.dialogues = [];
         this.currentDialogueIndex = 0;
         this.isActive = false;
-        this.z = 99;
         // Dialogue box setup
         this.dialogueBox = new Actor({
             pos: new Vector(x, y),
-            width: 100,
-            height: 20,
+            width: 300, // Adjusted for better visibility
+            height: 50, // Adjusted for better visibility
             color: Color.Gray
         });
         
         // Dialogue text setup
         this.dialogueText = new Label({
-            pos: new Vector(x - 100, y - 5),
+            pos: new Vector(x - 140, y ), // Adjusted for better positioning
             font: new Font({ size: 16, unit: FontUnit.Px }),
             text: '',
             color: Color.White
         });
+
+        this.dialogueBox.z = 1000;
+        this.dialogueText.z = 1000;
     }
     
     start(dialogues) {
@@ -31,12 +33,14 @@ export class DialogueManager {
         this.showDialogue();
     }
     
-    showDialogue(text) {
+    showDialogue() {
         if (this.currentDialogueIndex < this.dialogues.length) {
-            this.dialogueText.text = text;
+            this.dialogueText.text = this.dialogues[this.currentDialogueIndex];
             if (this.game) {
                 this.game.add(this.dialogueBox); // Add dialogue box to game
                 this.game.add(this.dialogueText); // Add dialogue text to game
+                console.log('Dialogue box position:', this.dialogueBox.pos);
+                console.log('Dialogue text position:', this.dialogueText.pos);
             } else {
                 console.error('Game instance is not defined.');
             }

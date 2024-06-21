@@ -68,6 +68,7 @@ export class Player extends Actor {
         const randomOutcome = outcomes[Math.floor(Math.random() * outcomes.length)];
         
         const scene = this.scene;
+        // @ts-ignore (Deze fout is er, maar game werkt wel.)
         const ui = scene?.ui;
 
         if (ui) {

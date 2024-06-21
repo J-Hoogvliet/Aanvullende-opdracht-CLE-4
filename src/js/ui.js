@@ -61,14 +61,49 @@ export class UI extends ScreenElement {
         this.addChild(this.caught);
     }
 
-    onPreUpdate(engine){
-        if(this.goldfish === 10 && this.hasLoggedMessage === false){
-            const dialogueManager = new DialogueManager(1340, 800, this.game); // Pass game instance
-            const dialogues = ['Je hebt 10 goudvissen gevangen!'];
+    onPreUpdate(game) {
+    // Check if the player has caught 10 goldfish and the message hasn't been logged yet
+    if (this.goldfish === 5 && this.hasLoggedMessage === false) {
+        try {
+            // Debug: Check the game instance and goldfish count
+            console.log('Goldfish count:', this.goldfish);
+            console.log('Game instance:', this.game);
+            this.goldfish = this.goldfish + 5;
+            this.goldLabel.text = `Goldfish: ${this.goldfish}`;
+
+            // Create an instance of DialogueManager with specified coordinates and the game instance
+            const dialogueManager = new DialogueManager(720, 800, this.game);
+
+            // Define the dialogue messages
+            const dialogues = [
+                'Je hebt 5 goudvissen gevangen!',
+                'hier heb je 5 goudvisjes oekel'
+            ];
+
+            // Debug: Check the dialogues array
+            console.log('Dialogues:', dialogues);
+            this.addChild(dialogueManager.dialogueBox);
+            this.addChild(dialogueManager.dialogueText);
+
+            // Start the dialogue sequence
             dialogueManager.start(dialogues);
+
+             this.game.input.keyboard.on('press', (evt) => {
+                        if (evt.key === Input.Keys.Space || evt.key === Input.Keys.W || evt.key === Input.Keys.S && dialogueManager.isActive) {
+                            dialogueManager.nextDialogue();
+                        }
+                    });
+        
+
+            // Set hasLoggedMessage to true to prevent re-logging
             this.hasLoggedMessage = true;
+        } catch (error) {
+            // Log or handle the error if any occurs
+            console.error('Failed to initiate dialogue manager:', error);
         }
     }
+}
+
 
     
 
