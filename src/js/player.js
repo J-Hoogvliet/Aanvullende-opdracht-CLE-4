@@ -16,7 +16,7 @@ export class Player extends Actor {
         this.z = 60;
         this.speed = 100;
         const sprite = Resources.Player.toSprite(); // Assuming Resources.Player is defined properly
-        sprite.scale.setTo(0.5, 0.5);
+        sprite.scale.setTo(0.8, 0.8);
         this.graphics.use(sprite);
         this.game = game;
         this.canFish = false; // Flag to determine if player can fish
@@ -30,24 +30,24 @@ export class Player extends Actor {
             if (engine.input.keyboard.isHeld(Input.Keys.W)) {
                 this.vel.y = -this.speed;
                 const sprite = Resources.Player_back.toSprite();
-                sprite.scale.setTo(0.5, 0.5);
+                sprite.scale.setTo(0.8, 0.8);
                 this.graphics.use(sprite);
             }
             if (engine.input.keyboard.isHeld(Input.Keys.S)) {
                 const sprite = Resources.Player.toSprite();
-                sprite.scale.setTo(0.5, 0.5);
+                sprite.scale.setTo(0.8, 0.8);
                 this.graphics.use(sprite);
                 this.vel.y = this.speed;
             }
             if (engine.input.keyboard.isHeld(Input.Keys.A)) {
                  const sprite = Resources.Player_left.toSprite();
-                sprite.scale.setTo(0.5, 0.5);
+                sprite.scale.setTo(1, 1);
                 this.graphics.use(sprite);
                 this.vel.x = -this.speed;
             }
             if (engine.input.keyboard.isHeld(Input.Keys.D)) {
                 const sprite = Resources.Player_right.toSprite();
-                sprite.scale.setTo(0.5, 0.5);
+                sprite.scale.setTo(1, 1);
                 this.graphics.use(sprite);
                 this.vel.x = this.speed;
             }
