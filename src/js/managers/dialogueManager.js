@@ -6,22 +6,24 @@ export class DialogueManager {
         this.dialogues = [];
         this.currentDialogueIndex = 0;
         this.isActive = false;
-        this.z = 99;
         // Dialogue box setup
         this.dialogueBox = new Actor({
             pos: new Vector(x, y),
-            width: 490,
-            height: 80,
+            width: 300, // Adjusted for better visibility
+            height: 50, // Adjusted for better visibility
             color: Color.Gray
         });
         
         // Dialogue text setup
         this.dialogueText = new Label({
-            pos: new Vector(x - 200, y - 10),
-            font: new Font({ size: 24, unit: FontUnit.Px }),
+            pos: new Vector(x - 140, y ), // Adjusted for better positioning
+            font: new Font({ size: 16, unit: FontUnit.Px }),
             text: '',
             color: Color.White
         });
+
+        this.dialogueBox.z = 1000;
+        this.dialogueText.z = 1000;
     }
     
     start(dialogues) {
@@ -37,6 +39,8 @@ export class DialogueManager {
             if (this.game) {
                 this.game.add(this.dialogueBox); // Add dialogue box to game
                 this.game.add(this.dialogueText); // Add dialogue text to game
+                console.log('Dialogue box position:', this.dialogueBox.pos);
+                console.log('Dialogue text position:', this.dialogueText.pos);
             } else {
                 console.error('Game instance is not defined.');
             }

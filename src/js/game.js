@@ -1,23 +1,57 @@
-import { GameScene } from './mainGame.js';
-import { Engine } from 'excalibur';
+import { Color, Engine } from 'excalibur';
 import { ResourceLoader, Resources } from './resources.js';
+import { GameScene } from './mainGame.js';
+import { BeginScene } from './BeginScene.js';
+import { OptionsScene } from './OptionsScene.js';
+import { IntroScene } from './IntroScene.js';
 
 export class Game extends Engine {
-  constructor() {
-    super({
-      width: 1440,
-      height: 900,
-      fixedUpdateFps: 60,
-    });
+    constructor() {
+        super({
+            width: 1440,
+            height: 900,
+            fixedUpdateFps: 60,
+            backgroundColor: Color.White
 
-    this.start(ResourceLoader).then(() => this.startGame());
-  }
+        });
 
- startGame() {
-    const gameScene = new GameScene();
-    this.addScene('GameScene', gameScene);
-    this.goToScene('GameScene');
-}
+        this.backgroundMusic = Resources.Muziek;
+        
+        this.start(ResourceLoader).then(() => this.startGame());
+    }
+
+    startGame() {
+        this.addScenes();
+        this.goToScene('begin');
+
+        // Start playing background music
+        if (this.backgroundMusic) {
+            this.backgroundMusic.loop = true;
+            this.backgroundMusic.play();
+        }
+    }
+
+    addScenes() {
+        if (!this.scenes['begin']) {
+            const beginScene = new BeginScene(this);
+            this.addScene('begin', beginScene);
+        }
+
+        if (!this.scenes['GameScene']) {
+            const gameScene = new GameScene(this);
+            this.addScene('GameScene', gameScene);
+        }
+
+        if (!this.scenes['options']) {
+            const optionsScene = new OptionsScene(this);
+            this.addScene('options', optionsScene);
+        }
+
+        if (!this.scenes['Intro']) {
+            const introSceneInstance = new IntroScene(this);
+            this.addScene('Intro', introSceneInstance);
+        }
+    }
 }
 
 new Game();

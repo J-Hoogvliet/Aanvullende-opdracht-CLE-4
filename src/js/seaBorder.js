@@ -1,7 +1,7 @@
 import { Actor, Color, CollisionType } from 'excalibur';
-import { Player } from './player.js'
+import { Player } from './player.js';
 
-export class Sea extends Actor {
+export class SeaBorder extends Actor {
     constructor(x, y, width, height) {
         super({
             x: x,
@@ -9,12 +9,13 @@ export class Sea extends Actor {
             width: width,
             height: height,
         });
-        this.body.collisionType = CollisionType.Fixed;
-        this.on('precollision', this.onPreCollision);
+        this.body.collisionType = CollisionType.Passive; 
+        this.on('precollision', this.onPreCollision.bind(this)); 
     }
+
     onPreCollision(evt) {
         if (evt.other instanceof Player) {
-            // console.log("U heeft de zee geraakt");
+            // console.log("You can fish here");
         }
     }
 }
