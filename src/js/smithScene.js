@@ -27,11 +27,11 @@ export class smithScene extends Scene {
     }
     this.ui = new UI(this);
     this.add(this.ui);
-    this.currentTrophy = new Trophy();
-    this.currentTrophy.z = 101;
-    this.currentTrophy.pos = new Vector(198, 70);
-    this.trophyCount(this.currentTrophy); // Update trofeeën bij initialisatie
-    this.add(this.currentTrophy);
+    // this.currentTrophy = new Trophy();
+    // this.currentTrophy.z = 101;
+  
+    // this.trophyCount(this.currentTrophy); // Update trofeeën bij initialisatie
+    // this.add(this.currentTrophy);
 
     const background = new Background();
     this.add(background);
@@ -77,17 +77,24 @@ export class smithScene extends Scene {
       if (this.goldfish >= this.goldfishPerCoin) {
         this.ui?.removePoint()// Verhoog munten met conversiewaarde
         this.ui?.addCash(this.coinsPerConversion); // Update UI
-        this.trophyCount(this.currentTrophy); // Update trofeeën
-        this.goldfish--
-      } else {
-        alert("U heeft niet genoeg vissen om in te leveren.");
+        this.goldfish -= this.goldfishPerCoin;
+        this.ui?.updateLocalStorage();
+      }else{
+        console.log(this.goldfish);
       }
     } else if (key === Input.Keys.Digit2) {
+      this.ui?.updateLocalStorage();
       this.engine.goToScene("GameScene"); // Optie 2: Ga terug naar buiten
     }
   }
 
   onPreUpdate(engine, delta) {
+    let storedValue = localStorage.getItem("gold");
+    this.goldfish = storedValue !== null ? parseInt(storedValue) : 0;
+    if (isNaN(this.goldfish)) {
+      console.error("Kan aantal goudvissen niet parsen uit localStorage.");
+      // Behandel de fout of geef een standaardwaarde op
+    }
     // Controleer gamepad input
     const gamepad = engine.input.gamepads.at(0);
     if (gamepad) {
@@ -98,18 +105,4 @@ export class smithScene extends Scene {
       }
     }
   }
-
- trophyCount(currenttrophy) {
-  if (this.cash >= 5000 && this.cash <= 9999) {
-    currenttrophy.graphics.use(Resources.TrophyBronze.toSprite());
-  } else if (this.cash >= 10000 && this.cash <= 14999) {
-    currenttrophy.graphics.use(Resources.TrophySilver.toSprite());
-  } else if (this.cash >= 15000 && this.cash <= 19999) {
-    currenttrophy.graphics.use(Resources.TrophyGold.toSprite());
-  } else if (this.cash >= 20000 && this.cash <= 29999) {
-    currenttrophy.graphics.use(Resources.TrophyDiamond.toSprite());
-  } else if (this.cash >= 30000) {
-    currenttrophy.graphics.use(Resources.TrophyBlack.toSprite());
-  }
-}
 }

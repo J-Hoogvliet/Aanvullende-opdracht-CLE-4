@@ -10,6 +10,7 @@ import { smithScene } from './smithScene.js';
 import { TrophyCount } from './trophycount.js';
 import { newUI } from './newUI.js';
 
+
 export class GameScene extends Scene {
     constructor(engine) {
         super();

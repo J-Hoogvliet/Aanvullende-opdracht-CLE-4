@@ -10,6 +10,7 @@ export class UI extends ScreenElement {
     constructor(goldfish, cash, game) {
         super();
         this.hasLoggedMessage = false;
+        this.spawned = false;
         let storedValue = localStorage.getItem('gold');
         this.goldfish = storedValue !== null ? parseInt(storedValue) : 0;
         if (isNaN(this.goldfish)) {
@@ -61,6 +62,10 @@ export class UI extends ScreenElement {
         text: 'Caught: ', // Initial text
         color: Color.White
     });
+
+    this.Trophy = new Trophy()
+    this.Trophy.graphics.use(Resources.TrophyGreen.toSprite())
+    this.Trophy.pos = new Vector(198, 70);
     }
 
     onInitialize(engine) {
@@ -68,11 +73,16 @@ export class UI extends ScreenElement {
         this.cashLabel.z = 1000;
         this.caughtLabel.z = 1000;
         this.caught.z = 1000;
+        this.Trophy.z = 1001
       
         
         this.addChild(this.goldLabel);
         this.addChild(this.cashLabel);
         this.addChild(this.caughtLabel);
+        if(!this.spawned){
+            this.addChild(this.Trophy)
+            this.spawned = true
+        }
        
         this.addChild(this.caught);
      
@@ -136,6 +146,17 @@ onPostUpdate(){
             console.error('Failed to parse goldfish count from localStorage.');
     // Handle the error or provide a default value
     }
+    if (this.cash >= 5000 && this.cash <= 9999) {
+        this.Trophy.graphics.use(Resources.TrophyBronze.toSprite());
+      } else if (this.cash >= 10000 && this.cash <= 14999) {
+        this.Trophy.graphics.use(Resources.TrophySilver.toSprite());
+      } else if (this.cash >= 15000 && this.cash <= 19999) {
+        this.Trophy.graphics.use(Resources.TrophyGold.toSprite());
+      } else if (this.cash >= 20000 && this.cash <= 29999) {
+        this.Trophy.graphics.use(Resources.TrophyDiamond.toSprite());
+      } else if (this.cash >= 30000) {
+        this.Trophy.graphics.use(Resources.TrophyBlack.toSprite());
+      }
 }
 
    addPoint() {
@@ -169,5 +190,8 @@ onPostUpdate(){
     changeText(text){
         this.caughtLabel.text = `Last Caught:`;
     }
-   
+    updateLocalStorage() {
+        localStorage.setItem("gold", this.goldfish.toString());
+        localStorage.setItem("cash", this.cash.toString());
+      }
 }
