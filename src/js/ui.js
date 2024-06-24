@@ -169,5 +169,9 @@ onPostUpdate(){
     changeText(text){
         this.caughtLabel.text = `Last Caught:`;
     }
+    updateLocalStorage() {
+        localStorage.setItem("gold", this.goldfish.toString());
+        localStorage.setItem("cash", this.cash.toString());
+      }
    
 }

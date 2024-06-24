@@ -78,16 +78,24 @@ export class smithScene extends Scene {
         this.ui?.removePoint()// Verhoog munten met conversiewaarde
         this.ui?.addCash(this.coinsPerConversion); // Update UI
         this.trophyCount(this.currentTrophy); // Update trofeeën
-        this.goldfish--
-      } else {
-        alert("U heeft niet genoeg vissen om in te leveren.");
+        this.goldfish -= this.goldfishPerCoin;
+        this.ui?.updateLocalStorage();
+      }else{
+        console.log(this.goldfish);
       }
     } else if (key === Input.Keys.Digit2) {
+      this.ui?.updateLocalStorage();
       this.engine.goToScene("GameScene"); // Optie 2: Ga terug naar buiten
     }
   }
 
   onPreUpdate(engine, delta) {
+    let storedValue = localStorage.getItem("gold");
+    this.goldfish = storedValue !== null ? parseInt(storedValue) : 0;
+    if (isNaN(this.goldfish)) {
+      console.error("Kan aantal goudvissen niet parsen uit localStorage.");
+      // Behandel de fout of geef een standaardwaarde op
+    }
     // Controleer gamepad input
     const gamepad = engine.input.gamepads.at(0);
     if (gamepad) {
