@@ -149,7 +149,7 @@ export class OptionsScene extends Scene {
                 adjustVolume(0.1);
             } else if (gamepad.isButtonPressed(Input.Buttons.DpadDown)) {
                 adjustVolume(-0.1);
-            } else if (gamepad.isButtonPressed(Input.Buttons.Face2)) {
+            } else if (gamepad.isButtonPressed(Input.Buttons.Digit1)) {
                 this.game.goToScene('begin');
             }
         }
