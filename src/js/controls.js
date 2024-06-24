@@ -65,16 +65,17 @@ export class ControlsScene extends Scene {
         home.on('pointerleave', () => {
             home.graphics.use(homeSprite);
         });
-
-        // Gamepad input handling
-        engine.input.gamepads.on('buttonup', (evt) => {
-            if (evt.button === Input.Keys.Digit1) { // Digit1 button
-                this.goToBeginScene();
-            }
-        });
     }
-
     goToBeginScene() {
         this.game.goToScene('begin');
     }
+
+    onPreUpdate(engine, delta) {
+        const gamepad = engine.input.gamepads.at(0);
+            if (gamepad.isButtonPressed(Input.Buttons.Face2)) {
+                this.game.goToScene('begin');
+            }
+    }
 }
+   
+

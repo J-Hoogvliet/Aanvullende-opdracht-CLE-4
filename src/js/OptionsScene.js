@@ -5,12 +5,30 @@ export class OptionsScene extends Scene {
     constructor(game) {
         super();
         this.game = game;
-        this.volume = 0.5; // Initiële volume
-        this.backgroundMusic = game.backgroundMusic;
+        this.volume = 0.5; // Initial volume
+        this.backgroundMusic = game.backgroundMusic; // Replace with actual background music reference
+
+        // Initialize labels and graphics
+        this.volumeLabel = new Label({
+            text: 'Volume: ' + Math.round(this.volume * 100) + '%',
+            pos: new Vector(0, 0), // Position will be updated in onInitialize
+            font: new Font({
+                size: 30,
+                family: 'Arial',
+                color: Color.Black,
+            }),
+            coordPlane: CoordPlane.Screen
+        });
+
+        this.volumeFillRectangle = new Rectangle({
+            width: this.volume * 300,
+            height: 20,
+            color: Color.fromHex('#fffea4') 
+        });
     }
 
     onInitialize(engine) {
-        // Laad opgeslagen volume van localStorage
+        // Load saved volume from localStorage
         const savedVolume = localStorage.getItem('volume');
         if (savedVolume !== null) {
             this.volume = parseFloat(savedVolume);
@@ -29,20 +47,11 @@ export class OptionsScene extends Scene {
         titleActor.graphics.use(titleSprite);
         this.add(titleActor);
 
-        // Volume label
-        const volumeLabel = new Label({
-            text: 'Volume: ' + Math.round(this.volume * 100) + '%',
-            pos: new Vector(engine.drawWidth / 2 - 80, engine.drawHeight / 2 + 120),
-            font: new Font({
-                size: 30,
-                family: 'Arial',
-                color: Color.Black,
-            }),
-            coordPlane: CoordPlane.Screen
-        });
-        this.add(volumeLabel);
+        // Set position for volume label after it's initialized
+        this.volumeLabel.pos = new Vector(engine.drawWidth / 2 - 80, engine.drawHeight / 2 + 120);
+        this.add(this.volumeLabel);
 
-        // Volume bar background (grijze balk)
+        // Volume bar background (gray bar)
         const volumeBarBackground = new Actor({
             pos: new Vector(engine.drawWidth / 2, engine.drawHeight / 2 + 100),
             anchor: new Vector(0.5, 0.5)
@@ -59,22 +68,8 @@ export class OptionsScene extends Scene {
             pos: new Vector(engine.drawWidth / 2 - 150, engine.drawHeight / 2 + 100),
             anchor: new Vector(0.0, 0.5)
         });
-        const volumeFillRectangle = new Rectangle({
-            width: this.volume * 300,
-            height: 20,
-            color: Color.fromHex('#fffea4') 
-        });
-        volumeBarFill.graphics.use(volumeFillRectangle);
+        volumeBarFill.graphics.use(this.volumeFillRectangle); // Use the initialized volumeFillRectangle
         this.add(volumeBarFill);
-
-        // Volume aanpassen functie
-        const adjustVolume = (increment) => {
-            this.volume = Math.min(1, Math.max(0, this.volume + increment));
-            this.backgroundMusic.volume = this.volume;
-            volumeLabel.text = 'Volume: ' + Math.round(this.volume * 100) + '%';
-            volumeFillRectangle.width = this.volume * 300;
-            localStorage.setItem('volume', this.volume.toString());
-        };
 
         // Increase volume button
         const increaseVolumeButton = new Label({
@@ -88,7 +83,7 @@ export class OptionsScene extends Scene {
             coordPlane: CoordPlane.Screen
         });
         increaseVolumeButton.on('pointerup', () => {
-            adjustVolume(0.1);
+            this.adjustVolume(0.1);
         });
         this.add(increaseVolumeButton);
 
@@ -104,7 +99,7 @@ export class OptionsScene extends Scene {
             coordPlane: CoordPlane.Screen
         });
         decreaseVolumeButton.on('pointerup', () => {
-            adjustVolume(-0.1);
+            this.adjustVolume(-0.1);
         });
         this.add(decreaseVolumeButton);
 
@@ -142,16 +137,28 @@ export class OptionsScene extends Scene {
     }
 
     onPreUpdate(engine, delta) {
-        // Controleer gamepad input
+        // Check gamepad input
         const gamepad = engine.input.gamepads.at(0);
         if (gamepad) {
             if (gamepad.isButtonPressed(Input.Buttons.DpadUp)) {
-                adjustVolume(0.1);
+                this.adjustVolume(0.1); // Increase volume by 0.1
             } else if (gamepad.isButtonPressed(Input.Buttons.DpadDown)) {
-                adjustVolume(-0.1);
-            } else if (gamepad.isButtonPressed(Input.Buttons.Digit1)) {
+                this.adjustVolume(-0.1); // Decrease volume by 0.1
+            } else if (gamepad.isButtonPressed(Input.Buttons.Face2)) {
                 this.game.goToScene('begin');
             }
         }
     }
+
+    adjustVolume(deltaVolume) {
+        // Adjust the increment value for smoother volume control
+        const increment = 0.05;
+        
+        this.volume = Math.min(1, Math.max(0, this.volume + deltaVolume * increment));
+        this.backgroundMusic.volume = this.volume;
+        // Update volume label and bar fill
+        this.volumeLabel.text = 'Volume: ' + Math.round(this.volume * 100) + '%';
+        this.volumeFillRectangle.width = this.volume * 300;
+        localStorage.setItem('volume', this.volume.toString());
+}
 }
