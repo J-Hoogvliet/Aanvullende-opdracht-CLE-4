@@ -1,20 +1,33 @@
 import { ScreenElement, FontUnit, Font, Vector, Label, Color, Input } from "excalibur";
-import { Resources } from "./resources";
+import { Resources,ResourceLoader } from "./resources";
 import { DialogueManager } from "./managers/dialogueManager";
 import { Caught } from "./caught";
+import { Trophy } from "./trophy";
+import { TrophyCount } from "./trophycount";
+import { smithScene } from "./smithScene";
 
 export class UI extends ScreenElement {
-    constructor(game) {
+    constructor(goldfish, cash, game) {
         super();
         this.hasLoggedMessage = false;
-        this.goldfish = 0;
-        this.cash = 0;
+        let storedValue = localStorage.getItem('gold');
+        this.goldfish = storedValue !== null ? parseInt(storedValue) : 0;
+        if (isNaN(this.goldfish)) {
+    console.error('Failed to parse goldfish count from localStorage.');
+    // Handle the error or provide a default value
+        }
+        let storedValue2 = localStorage.getItem('cash');
+        this.cash = storedValue2 !== null ? parseInt(storedValue2) : 0;
+        if (isNaN(this.cash)) {
+            console.error('Failed to parse goldfish count from localStorage.');
+    // Handle the error or provide a default value
+    }
         this.game = game;
         this.caught = "niks"
         this.goldLabel = new Label({
-            text: "Goldfish: 0",
+            text: `Goldfish: ${this.goldfish}`,
             color: Color.White,
-            pos: new Vector(100, 100),
+            pos: new Vector(170, 140),
             font: new Font({
                 family: "impact",
                 size: 24,
@@ -22,9 +35,9 @@ export class UI extends ScreenElement {
             }),
         });
          this.cashLabel = new Label({
-            text: "Cash: 0",
+            text: `Cash: ${this.cash}`,
             color: Color.White,
-            pos: new Vector(100, 150),
+            pos: new Vector(170, 190),
             font: new Font({
                 family: "impact",
                 size: 24,
@@ -34,14 +47,14 @@ export class UI extends ScreenElement {
          this.caughtLabel = new Label({
             text: "Last Caught:",
             color: Color.White,
-            pos: new Vector(100, 200),
+            pos: new Vector(170, 240),
             font: new Font({
                 family: "impact",
                 size: 24,
                 unit: FontUnit.Px,
             }),
         });
-        this.caught = new Caught(250,210)
+        this.caught = new Caught(325,255)
         this.catchLabel = new Label({
         pos: new Vector(10, 10), // Position of the label
         font: new Font({ size: 16, unit: FontUnit.Px }),
@@ -55,15 +68,19 @@ export class UI extends ScreenElement {
         this.cashLabel.z = 1000;
         this.caughtLabel.z = 1000;
         this.caught.z = 1000;
+      
+        
         this.addChild(this.goldLabel);
         this.addChild(this.cashLabel);
         this.addChild(this.caughtLabel);
+       
         this.addChild(this.caught);
+     
     }
 
     onPreUpdate(game) {
     // Check if the player has caught 10 goldfish and the message hasn't been logged yet
-    if (this.goldfish === 1 && this.hasLoggedMessage === false) {
+    if (this.goldfish === 5 && this.hasLoggedMessage === false) {
         try {
             // Debug: Check the game instance and goldfish count
             console.log('Goldfish count:', this.goldfish);
@@ -104,22 +121,40 @@ export class UI extends ScreenElement {
     }
 }
 
-
-    
+onPostUpdate(){
+    let storedValue = localStorage.getItem('gold');
+        this.goldfish = storedValue !== null ? parseInt(storedValue) : 0;
+        this.goldLabel.text = `Goldfish: ${this.goldfish}`
+        if (isNaN(this.goldfish)) {
+    console.error('Failed to parse goldfish count from localStorage.');
+    // Handle the error or provide a default value
+        }
+        let storedValue2 = localStorage.getItem('cash');
+        this.cash = storedValue2 !== null ? parseInt(storedValue2) : 0;
+        this.cashLabel.text = `Cash: ${this.cash}`
+        if (isNaN(this.cash)) {
+            console.error('Failed to parse goldfish count from localStorage.');
+    // Handle the error or provide a default value
+    }
+}
 
    addPoint() {
     this.goldfish++;
     this.goldLabel.text = `Goldfish: ${this.goldfish}`;
+    localStorage.setItem('gold', this.goldfish.toString());
+    console.log(this.getCash())
 }
     removePoint(){
        if (this.goldfish > 0) {
         this.goldfish--;
         this.goldLabel.text = `Goldfish: ${this.goldfish}`;
+        localStorage.setItem('gold', this.goldfish.toString());
     }
     }
     addCash(amount){
         this.cash = this.cash + amount;
         this.cashLabel.text = `Cash: ${this.cash}`;
+        localStorage.setItem('cash', this.cash.toString());
     }
 
      removeCash(amount){
@@ -127,7 +162,12 @@ export class UI extends ScreenElement {
         this.cashLabel.text = `Cash: ${this.cash}`;
     }
 
+    getCash(){
+        return this.cash;
+    }
+
     changeText(text){
         this.caughtLabel.text = `Last Caught:`;
     }
+   
 }

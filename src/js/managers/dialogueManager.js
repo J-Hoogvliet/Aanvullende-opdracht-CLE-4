@@ -10,15 +10,17 @@ export class DialogueManager {
 
         // Dialogue box setup
         this.dialogueBox = new Actor({
-            pos: new Vector(x, y),
-            color: Color.Transparent // Start with transparent color
+            pos: new Vector(0, 0),
+            anchor: new Vector(0, 0)
         });
+
+        this.dialogueBox.anchor = new Vector(0, 0);
         
 
         // Dialogue text setup
         this.dialogueText = new Label({
-            pos: new Vector(x - 140, y), // Adjusted for better positioning
-            font: new Font({ size: 16, unit: FontUnit.Px }),
+            pos: new Vector(x - 300, y), // Adjusted for better positioning
+            font: new Font({ size: 36, unit: FontUnit.Px }),
             text: '',
             color: Color.White
         });
@@ -35,34 +37,36 @@ export class DialogueManager {
     }
 
      showDialogue() {
-        if (this.currentDialogueIndex < this.dialogues.length) {
-            this.dialogueText.text = this.dialogues[this.currentDialogueIndex];
-            if (this.game) {
-                try {
-                    const sprite =  Resources.Textbox.toSprite(); // Load sprite asynchronously
+    if (this.currentDialogueIndex < this.dialogues.length) {
+        this.dialogueText.text = this.dialogues[this.currentDialogueIndex];
 
-                    if (!sprite) {
-                        throw new Error('Failed to load sprite from Resources.Textbox');
-                    }
-                    this.dialogueBox.graphics.use(sprite);
+        if (this.game) {
+            try {
+                const sprite = Resources.Textbox.toSprite(); // Load sprite
 
-                    this.game.add(this.dialogueBox); // Add dialogue box to game
-                    this.game.add(this.dialogueText); // Add dialogue text to game
-
-                    console.log('Sprite used:', sprite.image.path);
-                    console.log('graphic used:', this.dialogueBox.graphics);
-                    console.log('Dialogue box position:', this.dialogueBox.pos.toString());
-                    console.log('Dialogue text position:', this.dialogueText.pos.toString());
-                } catch (error) {
-                    console.error('Error loading or using sprite:', error);
+                if (!sprite) {
+                    throw new Error('Failed to load sprite from Resources.Textbox');
                 }
-            } else {
-                console.error('Game instance is not defined.');
+
+                this.dialogueBox.graphics.use(sprite);
+
+                this.game.add(this.dialogueText); // Add dialogue text to game
+                this.game.add(this.dialogueBox); // Add dialogue box to game
+
+                console.log('Sprite used:', sprite.image.path);
+                console.log('graphic used:', this.dialogueBox.graphics);
+                console.log('Dialogue box position:', this.dialogueBox.pos.toString());
+                console.log('Dialogue text position:', this.dialogueText.pos.toString());
+            } catch (error) {
+                console.error('Error loading or using sprite:', error);
             }
         } else {
-            this.endDialogue();
+            console.error('Game instance is not defined.');
         }
+    } else {
+        this.endDialogue();
     }
+}
 
     nextDialogue() {
         this.currentDialogueIndex++;
