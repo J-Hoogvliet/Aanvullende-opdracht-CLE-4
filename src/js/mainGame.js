@@ -77,7 +77,7 @@ export class GameScene extends Scene {
         
         player.on('collisionstart', (evt) => {
             if (evt.other instanceof House) {
-                engine.goToScene('smithScene'); 
+                engine.goToScene('smith'); 
             }
         });
     }
