@@ -5,6 +5,8 @@ import { BeginScene } from './BeginScene.js';
 import { OptionsScene } from './OptionsScene.js';
 import { IntroScene } from './IntroScene.js';
 import { smithScene } from './smithScene.js';
+import { ControlsScene } from './controls.js';
+
 
 export class Game extends Engine {
     constructor() {
@@ -14,13 +16,18 @@ export class Game extends Engine {
             fixedUpdateFps: 60,
             backgroundColor: Color.White
         });
-
+        var gold = 0;
+        var cash = 0;
         this.backgroundMusic = Resources.Muziek;
         
         this.start(ResourceLoader).then(() => this.startGame());
     }
 
     startGame() {
+        let defaultScore = 0
+        localStorage.setItem('gold', defaultScore.toString() );
+        localStorage.setItem('cash', defaultScore.toString() );
+
         this.addScenes();
         this.goToScene('begin');
 
@@ -54,6 +61,10 @@ export class Game extends Engine {
           if (!this.scenes['smith']) {
             const SmithScene = new smithScene(this);
             this.addScene('smith', SmithScene);
+        }
+        if (!this.scenes['controls']) {
+            const controlsScene = new ControlsScene(this);
+            this.addScene('controls', controlsScene);
         }
     }
 }
