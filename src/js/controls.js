@@ -52,7 +52,7 @@ export class ControlsScene extends Scene {
         home.graphics.use(homeSprite);
         this.add(home);
 
-        // Event handler voor klikken op de home knop (muis en gamepad)
+        // Event handler voor klikken op de home knop (muis)
         home.on('pointerup', () => {
             this.goToBeginScene();
         });
