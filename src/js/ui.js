@@ -7,7 +7,7 @@ import { TrophyCount } from "./trophycount";
 import { smithScene } from "./smithScene";
 
 export class UI extends ScreenElement {
-    constructor(goldfish, cash, game) {
+    constructor(game) {
         super();
         this.hasLoggedMessage = false;
         this.spawned = false;
@@ -74,6 +74,12 @@ export class UI extends ScreenElement {
         this.caughtLabel.z = 1000;
         this.caught.z = 1000;
         this.Trophy.z = 1001
+        if (this.game) {
+            // Access properties or call methods safely
+            console.log('Game instance:', this.game);
+          } else {
+            console.error('Game instance is undefined!');
+          }
       
         
         this.addChild(this.goldLabel);
@@ -88,48 +94,45 @@ export class UI extends ScreenElement {
      
     }
 
-    onPreUpdate(game) {
-        // Check if the player has caught 10 goldfish and the message hasn't been logged yet
-        if (this.goldfish === 1 && this.hasLoggedMessage === false) {
-            try {
-                // Debug: Check the game instance and goldfish count
-                console.log('Goldfish count:', this.goldfish);
-                console.log('Game instance:', this.game);
-                this.goldfish = this.goldfish + 5;
-                this.goldLabel.text = `Goldfish: ${this.goldfish}`;
-    
-                // Create an instance of DialogueManager with specified coordinates and the game instance
-                const dialogueManager = new DialogueManager(1000, 800, this.game);
-    
-                // Define the dialogue messages
-                const dialogues = [
-                    'Je hebt 5 goudvissen gevangen!',
-                    'hier heb je 5 goudvisjes oekel'
-                ];
-    
-                // Debug: Check the dialogues array
-                console.log('Dialogues:', dialogues);
-                this.addChild(dialogueManager.dialogueBox);
-                this.addChild(dialogueManager.dialogueText);
-    
-                // Start the dialogue sequence
-                dialogueManager.start(dialogues);
-    
-                this.game.input.keyboard.on('press', (evt) => {
-                    if (evt.key === Input.Keys.Space || evt.key === Input.Keys.W || evt.key === Input.Keys.S && dialogueManager.isActive) {
-                            dialogueManager.nextDialogue();
-                        }
-                    });
-            
-    
-                // Set hasLoggedMessage to true to prevent re-logging
-                this.hasLoggedMessage = true;
-            } catch (error) {
-                // Log or handle the error if any occurs
-                console.error('Failed to initiate dialogue manager:', error);
+    onPreUpdate(engine) {
+        if (this.goldfish === 1 && !this.hasLoggedMessage) {
+          try {
+            console.log('Goldfish count:', this.goldfish);
+      
+            // Check if this.game is defined before using it
+            if (this.game) {
+              this.goldfish += 5;
+              this.goldLabel.text = `Goldfish: ${this.goldfish}`;
+      
+              // Create an instance of DialogueManager with specified coordinates and the game instance
+              const dialogueManager = new DialogueManager(1000, 800, this.game);
+      
+              const dialogues = [
+                'Je hebt 5 goudvissen gevangen!',
+                'Hier heb je 5 goudvissen, oekel!'
+              ];
+      
+              this.addChild(dialogueManager.dialogueBox);
+              this.addChild(dialogueManager.dialogueText);
+      
+              dialogueManager.start(dialogues);
+      
+              this.game.input.keyboard.on('press', (evt) => {
+                if ((evt.key === Input.Keys.Space || evt.key === Input.Keys.W || evt.key === Input.Keys.S) && dialogueManager.isActive) {
+                  dialogueManager.nextDialogue();
+                }
+              });
+      
+              this.hasLoggedMessage = true;
+            } else {
+              console.error('Game instance is undefined!');
             }
+          } catch (error) {
+            console.error('Failed to initiate dialogue manager:', error);
+          }
         }
-    }
+      }
+      
 
 onPostUpdate(){
     let storedValue = localStorage.getItem('gold');
