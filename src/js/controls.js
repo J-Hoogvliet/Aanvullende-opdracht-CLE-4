@@ -69,7 +69,7 @@ export class ControlsScene extends Scene {
         // Gamepad input handling
         engine.input.gamepads.on('buttonup', (evt) => {
             if (evt.button === Input.Buttons.Face1) { // Face button 1 (typically A on Xbox controller)
-                this.goToBeginScene();
+                this.game.goToScene('begin');
             }
         });
     }
