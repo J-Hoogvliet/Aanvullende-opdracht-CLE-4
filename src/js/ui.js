@@ -10,6 +10,7 @@ export class UI extends ScreenElement {
     constructor(goldfish, cash, game) {
         super();
         this.hasLoggedMessage = false;
+        this.spawned = false;
         let storedValue = localStorage.getItem('gold');
         this.goldfish = storedValue !== null ? parseInt(storedValue) : 0;
         if (isNaN(this.goldfish)) {
