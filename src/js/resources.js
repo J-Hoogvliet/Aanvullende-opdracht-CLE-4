@@ -30,7 +30,8 @@ const Resources = {
   TrophyCount: new ImageSource('images/trophyCount.png'),
   Control: new ImageSource('images/controls.png'), 
   ControlsSelect: new ImageSource('images/controlsselect.png'), 
-  Controlpixel: new ImageSource('images/control.png')
+  Controlpixel: new ImageSource('images/control.png'),
+  Achievement: new Audio('images/achievement.mp3'),
   // Add other resources here if needed
 };
 
