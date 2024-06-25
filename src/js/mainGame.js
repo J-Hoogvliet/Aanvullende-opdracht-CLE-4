@@ -38,7 +38,7 @@ export class GameScene extends Scene {
 
         const seaBorder = new SeaBorder(960, 1050, 3040, 220);
         const seaBorder1 = new SeaBorder(0, 850, 620, 3020);
-        const seaBorder2 = new SeaBorder(1930, 945, 1040, 1250);
+        const seaBorder2 = new SeaBorder(1930, 945, 1040, 1270);
         const seaBorder3 = new SeaBorder(1985, 315, 480, 800);
 
         this.ui = new UI(this.engine);

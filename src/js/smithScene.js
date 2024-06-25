@@ -74,9 +74,11 @@ export class smithScene extends Scene {
   handleInput(key) {
     if (key === Input.Keys.Digit1) {
       // Optie 1: Converteer goudvissen naar munten
+      // @ts-ignore
       if (this.goldfish >= this.goldfishPerCoin) {
         this.ui?.removePoint()// Verhoog munten met conversiewaarde
         this.ui?.addCash(this.coinsPerConversion); // Update UI
+        // @ts-ignore
         this.goldfish -= this.goldfishPerCoin;
         this.ui?.updateLocalStorage();
       }else{
