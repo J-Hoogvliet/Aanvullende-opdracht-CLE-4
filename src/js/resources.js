@@ -32,6 +32,12 @@ const Resources = {
   ControlsSelect: new ImageSource('images/controlsselect.png'), 
   Controlpixel: new ImageSource('images/control.png'),
   Achievement: new Audio('images/achievement.mp3'),
+  Goldbar1: new ImageSource('images/1goldbar.png'),
+  Crystal: new ImageSource('images/crystal.png'),
+  Diamond: new ImageSource('images/daimond.png'),
+  Goldbar: new ImageSource('images/goldbar.png'),
+  Pickaxe: new ImageSource('images/pickaxe.png'),
+
   // Add other resources here if needed
 };
 
@@ -64,7 +70,11 @@ const ResourceLoader = new Loader([
   Resources.Control,
   Resources.ControlsSelect,
   Resources.Controlpixel,
-
+  Resources.Goldbar1,
+  Resources.Crystal,
+  Resources.Diamond,
+  Resources.Goldbar,
+  Resources.Pickaxe,
 ]);
 
 export { Resources, ResourceLoader };

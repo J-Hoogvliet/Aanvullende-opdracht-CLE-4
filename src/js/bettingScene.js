@@ -13,6 +13,8 @@ export class bettingScene extends Scene {
        
     }
 onInitialize(data, engine){
+    this.disableSpin()
+
      let storedValue = localStorage.getItem("cash");
     this.cash = storedValue !== null ? parseInt(storedValue) : 0;
     if (isNaN(this.cash)) {
@@ -25,8 +27,25 @@ this.ui = new UI(this);
     console.log(storedValue)
 }
 
+disableSpin() {
+    this.canSpin = false // Spinwiel staat stil
+}
 
+enableSpin(){
+    this.canSpin = true // Spinwiel staat aan
+}
 
+betting(){
+    this.enableSpin
+    if (this.canSpin){
+        const outcomes = ['crystal', 'diamond', 'goldbar', 'goldbar1', 'pickaxe'];
+        const randomOutcome = outcomes[Math.floor(Math.random() * outcomes.length)];
+
+        const scene = this.scene;
+            // @ts-ignore (Deze fout is er, maar game werkt wel.)
+            const ui = scene?.ui;
+    }
+}
 
 
 }

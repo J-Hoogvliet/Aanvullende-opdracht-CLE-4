@@ -157,5 +157,6 @@ onPostUpdate(){
     updateLocalStorage() {
         localStorage.setItem("gold", this.goldfish.toString());
         localStorage.setItem("cash", this.cash.toString());
-      }
+    }
+    
 }
