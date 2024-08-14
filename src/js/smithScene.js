@@ -71,7 +71,7 @@ export class smithScene extends Scene {
     });
   }
 
-  handleInput(key) {
+  handleInput(key, engine) {
     if (key === Input.Keys.Digit1) {
       // Optie 1: Converteer goudvissen naar munten
       // @ts-ignore
@@ -87,6 +87,9 @@ export class smithScene extends Scene {
     } else if (key === Input.Keys.Digit2) {
       this.ui?.updateLocalStorage();
       this.engine.goToScene("GameScene"); // Optie 2: Ga terug naar buiten
+    } else if (key ===Input.Keys.D){
+      this.ui?.updateLocalStorage();
+      this.engine.goToScene("betting"); // Optie 3: Ga terug naar gokken
     }
   }
 

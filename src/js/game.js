@@ -6,6 +6,7 @@ import { OptionsScene } from './OptionsScene.js';
 import { IntroScene } from './IntroScene.js';
 import { smithScene } from './smithScene.js';
 import { ControlsScene } from './controls.js';
+import { bettingScene } from './bettingScene.js';
 
 
 export class Game extends Engine {
@@ -49,6 +50,11 @@ export class Game extends Engine {
             this.addScene('GameScene', gameScene);
         }
 
+         if (!this.scenes['betting']) {
+            const BettingScene = new bettingScene(this);
+            this.addScene('betting', BettingScene)
+        }
+
         if (!this.scenes['options']) {
             const optionsScene = new OptionsScene(this);
             this.addScene('options', optionsScene);
@@ -66,6 +72,7 @@ export class Game extends Engine {
             const controlsScene = new ControlsScene(this);
             this.addScene('controls', controlsScene);
         }
+       
     }
 }
 
