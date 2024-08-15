@@ -60,10 +60,20 @@ export class smithScene extends Scene {
       font: new Font({ size: 24, unit: FontUnit.Px }),
     });
 
+    
+    const optie3Tekst = new Label({
+      x: 200,
+      y: 400,
+      text: "3. Ga naar gokhal. ->",
+      color: Color.Black,
+      font: new Font({ size: 24, unit: FontUnit.Px }),
+    });
+
     // Voeg de labels toe aan de scene
     this.add(welkomTekst);
     this.add(optie1Tekst);
     this.add(optie2Tekst);
+    this.add(optie3Tekst);
 
     // Event handler voor toetsenbord
     this.input.keyboard.on("press", (evt) => {
@@ -89,7 +99,7 @@ export class smithScene extends Scene {
       this.engine.goToScene("GameScene"); // Optie 2: Ga terug naar buiten
     } else if (key ===Input.Keys.D){
       this.ui?.updateLocalStorage();
-      this.engine.goToScene("betting"); // Optie 3: Ga terug naar gokken
+      this.engine.goToScene("betting"); // Optie 3: Ga naar gokken
     }
   }
 

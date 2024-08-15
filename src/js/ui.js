@@ -69,11 +69,11 @@ export class UI extends ScreenElement {
     }
 
     onInitialize(engine) {
-        this.goldLabel.z = 1000;
-        this.cashLabel.z = 1000;
+        this.goldLabel.z = 1003;
+        this.cashLabel.z = 1003;
         this.caughtLabel.z = 1000;
         this.caught.z = 1000;
-        this.Trophy.z = 1001
+        this.Trophy.z = 1003;
         if (this.game) {
             // Access properties or call methods safely
             console.log('Game instance:', this.game);
