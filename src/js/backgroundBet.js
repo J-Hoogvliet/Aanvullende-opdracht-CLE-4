@@ -6,7 +6,7 @@ export class BackgroundBetting extends Actor {
         super()
     }
         onInitialize(){
-            const sprite = Resources.Smith.toSprite();
+            const sprite = Resources.BettingBackground.toSprite();
             this.graphics.use(sprite);
             this.pos = new Vector(720, 450)
     }

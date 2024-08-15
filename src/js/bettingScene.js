@@ -3,6 +3,7 @@ import { Trophy } from './trophy';
 import { UI } from './ui';
 import { Resources } from './resources'; // Zorg ervoor dat de juiste resources zijn geïmporteerd
 import { BackgroundBetting } from './backgroundBet';
+import { Icon } from './iconMaker';
 
 export class bettingScene extends Scene {
 
@@ -12,12 +13,11 @@ export class bettingScene extends Scene {
         this.bettingFee = -100;
         this.winnings = 1000;
         this.bettingNumerOutcome = 0;
-
        
     }
 onInitialize(engine){
     this.disableSpin()
-
+    this.cash;
      let storedValue = localStorage.getItem("cash");
     this.cash = storedValue !== null ? parseInt(storedValue) : 0;
     if (isNaN(this.cash)) {
@@ -32,20 +32,72 @@ background.z = 1002;
 this.ui = new UI(this);
     this.add(this.ui);
 
-    
+//Maak de icoontjes aan
+this.Left = new Icon();
+this.Left.graphics.use(Resources.gold.toSprite())
+this.Middle = new Icon();
+this.Middle.graphics.use(Resources.gold.toSprite())
+this.right = new Icon();
+this.right.graphics.use(Resources.gold.toSprite())
+
+//Toevoegen icoontjes
+this.add(this.Left);
+this.add(this.Middle);
+this.add(this.right);
+
+
 
   this.input.keyboard.on("press", (evt) => {
-      this.handleInput(evt.key);
+      this.handleInput(evt.key, this.cash);
     });
 
+ const optie3Tekst = new Label({
+      x: 200,
+      y: 750,
+      z: 1004,
+      text: "Welkom in de gokkamer. Verdien hier meer coins zonder te hoeven vissen.",
+      color: Color.Black,
+      font: new Font({ size: 24, unit: FontUnit.Px }),
+    });
+
+     const optie4Tekst = new Label({
+      x: 200,
+      y: 780,
+      z: 1004,
+      text: "Om terug te gaan naar de smid klik op <-",
+      color: Color.Black,
+      font: new Font({ size: 24, unit: FontUnit.Px }),
+    });
+    // Voeg de labels toe aan de scene
+    this.add(optie3Tekst);
+    this.add(optie4Tekst);
 }
 
-handleInput(key){
+handleInput(key, cash){
     if(key === Input.Keys.Enter){
         this.enableSpin()
         console.log("gokken kan altijd")
-        this.betting1()
+        if(cash >= 199){
+            this.betting1()
+        } else {
+            console.log("Bro je geld is op, ga vissen jij!")
+        }
+        
     }
+    if (key === Input.Keys.A){
+        this.ui?.updateLocalStorage();
+      this.engine.goToScene("smith"); // ga terug naar smithscene
+    }
+}
+
+iconLeft(){
+    
+}
+iconMiddle(){
+    
+}
+iconRight(){
+    
 }
 
 
@@ -63,29 +115,29 @@ betting1(){
     this.enableSpin
     if (this.canSpin){
         const outcomes = ['crystal', 'diamond', 'goldbar', 'goldbar1', 'pickaxe'];
-        const randomOutcome = outcomes[Math.floor(Math.random() * outcomes.length)];
+        const randomOutcome = outcomes[Math.floor(Math.random() * outcomes.length - 2)];
 
-        const scene = this.scene;
+        const scene = this;
             // @ts-ignore (Deze fout is er, maar game werkt wel.)
         const ui = scene?.ui;
 
         if(ui){
             switch (randomOutcome) {
                     case 'crystal':
-                        console.log("1")
-
+                        console.log("1")    
+                        break
                     case 'diamond':
                         console.log("2")
-                        
+                        break
                     case 'goldbar':
                         console.log("3")
-                        
+                        break
                     case 'goldbar1':
                         console.log("4")
-
+                        break
                     case 'pickaxe':
                         console.log("5")
-
+                        break
                 }
             } else {
                 console.error('UI is not available in the current scene.');

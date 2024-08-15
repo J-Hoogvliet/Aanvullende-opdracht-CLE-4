@@ -37,6 +37,7 @@ const Resources = {
   Diamond: new ImageSource('images/daimond.png'),
   Goldbar: new ImageSource('images/goldbar.png'),
   Pickaxe: new ImageSource('images/pickaxe.png'),
+  BettingBackground: new ImageSource('images/backgroud-betting-ship.png'),
 
   // Add other resources here if needed
 };
@@ -75,6 +76,7 @@ const ResourceLoader = new Loader([
   Resources.Diamond,
   Resources.Goldbar,
   Resources.Pickaxe,
+  Resources.BettingBackground,
 ]);
 
 export { Resources, ResourceLoader };
