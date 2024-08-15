@@ -5,8 +5,8 @@ export class Icon extends Actor {
         super({
             x: x,
             y: y,
-            width: 20,
-            height: 20,
+            width: 70,
+            height: 60,
             color: Color.Blue,
         });
         this.type = type;

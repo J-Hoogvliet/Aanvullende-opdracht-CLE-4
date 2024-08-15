@@ -12,8 +12,12 @@ export class bettingScene extends Scene {
         this.game = game;
         this.bettingFee = -100;
         this.winnings = 1000;
-        this.bettingNumerOutcome = 0;
+        this.bettingOutcomeL = 0;
+        this.bettingOutcomeM = 0;
+        this.bettingOutcomeR = 0;
        
+
+
     }
 onInitialize(engine){
     this.disableSpin()
@@ -33,12 +37,17 @@ this.ui = new UI(this);
     this.add(this.ui);
 
 //Maak de icoontjes aan
-this.Left = new Icon();
-this.Left.graphics.use(Resources.gold.toSprite())
-this.Middle = new Icon();
-this.Middle.graphics.use(Resources.gold.toSprite())
-this.right = new Icon();
-this.right.graphics.use(Resources.gold.toSprite())
+this.Left = new Icon(395, 403);
+this.Left.graphics.use(Resources.gold.toSprite());
+this.Left.z = 1004;
+
+this.Middle = new Icon(718, 403);
+this.Middle.graphics.use(Resources.gold.toSprite());
+this.Middle.z = 1004;
+
+this.right = new Icon(1045, 403);
+this.right.graphics.use(Resources.gold.toSprite());
+this.right.z = 1004;
 
 //Toevoegen icoontjes
 this.add(this.Left);
@@ -76,9 +85,8 @@ this.add(this.right);
 handleInput(key, cash){
     if(key === Input.Keys.Enter){
         this.enableSpin()
-        console.log("gokken kan altijd")
         if(cash >= 199){
-            this.betting1()
+            this.bettingHandler()
         } else {
             console.log("Bro je geld is op, ga vissen jij!")
         }
@@ -90,14 +98,25 @@ handleInput(key, cash){
     }
 }
 
+
+bettingHandler(){
+    this.iconLeft()
+    this.iconMiddle()
+    this.iconRight()
+   
+}
+
 iconLeft(){
-    
+    const left = this.Left
+    this.betting(left, this.bettingOutcomeL)
 }
 iconMiddle(){
-    
+    const middle = this.Middle
+    this.betting(middle, this.bettingOutcomeM)
 }
 iconRight(){
-    
+    const right = this.right
+    this.betting(right, this.bettingOutcomeR)
 }
 
 
@@ -111,8 +130,8 @@ enableSpin(){
     this.canSpin = true // Spinwiel staat aan
 }
 
-betting1(){
-    this.enableSpin
+betting(direction, outcome){
+    this.lastoutcome = outcome;
     if (this.canSpin){
         const outcomes = ['crystal', 'diamond', 'goldbar', 'goldbar1', 'pickaxe'];
         const randomOutcome = outcomes[Math.floor(Math.random() * outcomes.length - 2)];
@@ -124,20 +143,30 @@ betting1(){
         if(ui){
             switch (randomOutcome) {
                     case 'crystal':
-                        console.log("1")    
-                        break
+                        console.log("1");
+                        direction.graphics.use(Resources.Crystal.toSprite());  
+                        this.lastoutcome = 1;
+                        break;
                     case 'diamond':
-                        console.log("2")
-                        break
+                        console.log("2");
+                        direction.graphics.use(Resources.Diamond.toSprite());
+                        this.lastoutcome = 2;
+                        break;
                     case 'goldbar':
-                        console.log("3")
-                        break
+                        console.log("3");
+                        direction.graphics.use(Resources.Goldbar.toSprite());
+                        this.lastoutcome = 3;
+                        break;
                     case 'goldbar1':
-                        console.log("4")
-                        break
+                        console.log("4");
+                        direction.graphics.use(Resources.Goldbar1.toSprite());
+                        this.lastoutcome = 4; 
+                        break;
                     case 'pickaxe':
-                        console.log("5")
-                        break
+                        console.log("5");
+                        direction.graphics.use(Resources.Pickaxe.toSprite()); 
+                        this.lastoutcome = 5;
+                        break;
                 }
             } else {
                 console.error('UI is not available in the current scene.');
@@ -145,9 +174,20 @@ betting1(){
 
         } else {
             console.log("je kan niet gokken")
-        }
+        } 
+        this.saveOutcome(direction)
     }
 
+
+    saveOutcome(direction){
+if (direction = this.Left){
+
+} else if(direction = this.Middle){
+    
+} else if (direction = this.right){
+    
+}
+    }
   
 }
 
