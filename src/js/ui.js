@@ -1,14 +1,17 @@
-import { ScreenElement, FontUnit, Font, Vector, Label, Color, Input } from "excalibur";
+import { ScreenElement, FontUnit, Font, Vector, Label, Color, Input, Animation, Graphic, Timer } from "excalibur";
+import * as ex from 'excalibur';
 import { Resources,ResourceLoader } from "./resources";
 import { DialogueManager } from "./managers/dialogueManager";
 import { Caught } from "./caught";
 import { Trophy } from "./trophy";
 import { TrophyCount } from "./trophycount";
 import { smithScene } from "./smithScene";
+import { Explosion } from "./Explosion";
 
 export class UI extends ScreenElement {
     constructor(game) {
         super();
+        this.animationDuration = 500;
         this.hasLoggedMessage = false;
         this.spawned = false;
         let storedValue = localStorage.getItem('gold');
@@ -142,13 +145,25 @@ onPostUpdate(){
         localStorage.setItem('cash', this.cash.toString());
     }
 
-     removeCash(amount){
+    removeCash(amount){
         this.cash = this.cash - amount;
         this.cashLabel.text = `Cash: ${this.cash}`;
     }
 
     getCash(){
         return this.cash;
+    }
+
+    bettingFee(fee){
+        this.cash = this.cash - fee;
+        this.cashLabel.text =  `Cash: ${this.cash}`;
+        localStorage.setItem('cash', this.cash.toString());
+    }
+
+    winnings(amount){
+        this.cash = this.cash + amount;
+        this.cashLabel.text =  `Cash: ${this.cash}`;
+        localStorage.setItem('cash', this.cash.toString());
     }
 
     changeText(text){
@@ -159,4 +174,6 @@ onPostUpdate(){
         localStorage.setItem("cash", this.cash.toString());
     }
     
+    
+
 }

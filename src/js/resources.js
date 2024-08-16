@@ -38,6 +38,8 @@ const Resources = {
   Goldbar: new ImageSource('images/goldbar.png'),
   Pickaxe: new ImageSource('images/pickaxe.png'),
   BettingBackground: new ImageSource('images/backgroud-betting-ship.png'),
+  Maurice: new ImageSource('images/Maurice_29.png'),
+  Explosion: new ImageSource('images/My-img8bit-com-Effect__2_-removebg-preview.png'),
 
   // Add other resources here if needed
 };
@@ -77,6 +79,8 @@ const ResourceLoader = new Loader([
   Resources.Goldbar,
   Resources.Pickaxe,
   Resources.BettingBackground,
+  Resources.Maurice,
+  Resources.Explosion,
 ]);
 
 export { Resources, ResourceLoader };
