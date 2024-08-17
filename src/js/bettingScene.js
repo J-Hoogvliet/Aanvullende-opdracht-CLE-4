@@ -101,13 +101,33 @@ this.add(this.timer);
       x: 200,
       y: 780,
       z: 1004,
-      text: "Om terug te gaan naar de smid klik op <-",
+      text: "Om te kunnen gokken klik op X",
+      color: Color.Black,
+      font: new Font({ size: 24, unit: FontUnit.Px }),
+    });
+
+     const optie5Tekst = new Label({
+      x: 200,
+      y: 810,
+      z: 1004,
+      text: "Om terug te gaan naar de smid klik op O",
       color: Color.Black,
       font: new Font({ size: 24, unit: FontUnit.Px }),
     });
     // Voeg de labels toe aan de scene
     this.add(optie3Tekst);
     this.add(optie4Tekst);
+}
+
+onPreUpdate(engine){
+     const gamepad = engine.input.gamepads.at(0);
+    if (gamepad) {
+      if (gamepad.isButtonPressed(Input.Buttons.Face1)) {
+        this.handleInput(Input.Keys.Enter);
+      } else if (gamepad.isButtonPressed(Input.Buttons.Face2)) {
+        this.handleInput(Input.Keys.A);
+      }
+    }
 }
 
 handleInput(key, cash, game){
