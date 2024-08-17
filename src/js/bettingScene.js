@@ -296,7 +296,7 @@ onPreUpdate(engine){
      const gamepad = engine.input.gamepads.at(0);
      
     if (gamepad) {
-      if (gamepad.isButtonPressed(Input.Buttons.face4)) {
+      if (gamepad.isButtonPressed(Input.Buttons.Face4)) {
         this.inputHandler(Input.Keys.Digit3);
       } else if (gamepad.isButtonPressed(Input.Buttons.Face2)) {
         this.inputHandler(Input.Keys.Digit4);
