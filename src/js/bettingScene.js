@@ -1,4 +1,4 @@
-import { Scene, Label, Input, Color, Font, FontUnit, Vector, Timer } from 'excalibur';
+import { Scene, Label, Input, Color, Font, FontUnit, Vector, Timer, Gamepads } from 'excalibur';
 import { Trophy } from './trophy';
 import { UI } from './ui';
 import { Resources } from './resources'; // Zorg ervoor dat de juiste resources zijn geïmporteerd
@@ -11,7 +11,7 @@ import { Game } from './game';
 
 export class bettingScene extends Scene {
 
-    constructor(engine, game){
+    constructor(game){
         super();
         this.game = game;
         this.bettingFee = 100;
@@ -37,6 +37,7 @@ export class bettingScene extends Scene {
 
     }
 onInitialize(engine, game){
+    
     this.disableSpin()
     this.cash;
      let storedValue = localStorage.getItem("cash");
@@ -77,7 +78,7 @@ this.add(this.right);
 
 this.timer = new Timer({
     repeats: false,
-     fcn: () => this.explosionStop(game),
+     fcn: () => this.explosionStop(),
         interval: 4000,
     });
 this.add(this.timer);
@@ -85,7 +86,7 @@ this.add(this.timer);
 
 
   this.input.keyboard.on("press", (evt) => {
-      this.handleInput(evt.key, this.cash, game);
+      this.inputHandler(evt.key, this.cash);
     });
 
  const optie3Tekst = new Label({
@@ -117,31 +118,22 @@ this.add(this.timer);
     // Voeg de labels toe aan de scene
     this.add(optie3Tekst);
     this.add(optie4Tekst);
+    this.add(optie5Tekst);
 }
 
-onPreUpdate(engine){
-     const gamepad = engine.input.gamepads.at(0);
-    if (gamepad) {
-      if (gamepad.isButtonPressed(Input.Buttons.Face1)) {
-        this.handleInput(Input.Keys.Enter);
-      } else if (gamepad.isButtonPressed(Input.Buttons.Face2)) {
-        this.handleInput(Input.Keys.A);
-      }
-    }
-}
 
-handleInput(key, cash, game){
-    if(key === Input.Keys.Enter){
-        this.beforeBetting(cash, game)
 
+inputHandler(key, cash){
+    if(key === Input.Keys.Digit3){
+        this.beforeBetting(cash)
     }
-    if (key === Input.Keys.A){
+    if (key === Input.Keys.Digit4){
         this.ui?.updateLocalStorage();
       this.engine.goToScene("smith"); // ga terug naar smithscene
     }
 }
 
-beforeBetting(cash, game) {
+beforeBetting(cash) {
        
         if(cash >= 199){
             const currentTime = Date.now();
@@ -151,7 +143,7 @@ beforeBetting(cash, game) {
             this.ui?.bettingFee(this.bettingFee);
             this.ui?.updateLocalStorage();
             this.enableSpin()
-            this.bettingHandler(game)
+            this.bettingHandler()
             this.disableSpin()
             this.lastBettingTime = currentTime;
             
@@ -164,25 +156,25 @@ beforeBetting(cash, game) {
        
     }
 
-bettingHandler(game){
-    this.iconRight(game)
-    this.iconLeft(game)
-    this.iconMiddle(game)
+bettingHandler(){
+    this.iconRight()
+    this.iconLeft()
+    this.iconMiddle()
     
    
 }
 
-iconLeft(game){
+iconLeft(){
     const left = this.Left
-    this.betting(left, this.bettingOutcomeL, game)
+    this.betting(left, this.bettingOutcomeL)
 }
 iconMiddle(game){
     const middle = this.Middle
-    this.betting(middle, this.bettingOutcomeM, game)
+    this.betting(middle, this.bettingOutcomeM)
 }
 iconRight(game){
     const right = this.right
-    this.betting(right, this.bettingOutcomeR, game)
+    this.betting(right, this.bettingOutcomeR)
 }
 
 
@@ -196,7 +188,7 @@ enableSpin(){
     this.canSpin = true // Spinwiel staat aan
 }
 
-betting(direction, outcome, game){
+betting(direction, outcome){
     this.lastoutcome = outcome;
     this.enableSpin
     if (this.canSpin){
@@ -236,7 +228,7 @@ betting(direction, outcome, game){
                         break;
                 }
                 outcome - this.lastoutcome;
-                this.saveOutcome(direction, this.lastoutcome, outcome, game);
+                this.saveOutcome(direction, this.lastoutcome, outcome);
             } else {
                 console.error('UI is not available in the current scene.');
             }
@@ -248,7 +240,7 @@ betting(direction, outcome, game){
     }
 
 
-saveOutcome(direction, lastoutcome, outcome, game){
+saveOutcome(direction, lastoutcome, outcome){
         
 if (direction === this.Left){
     this.spinL = lastoutcome;
@@ -263,13 +255,13 @@ if (direction === this.Left){
     this.bettingOutcomeR = outcome;
     console.log(this.spinR);
 }
-this.winningsHandler(this.spinL, this.spinM, this.spinR, game)
+this.winningsHandler(this.spinL, this.spinM, this.spinR)
 }
 
-winningsHandler (outcomeL, outcomeM, outcomeR, game){
+winningsHandler (outcomeL, outcomeM, outcomeR){
 if (outcomeL === outcomeM && outcomeL === outcomeR && outcomeM === outcomeR){
     this.ui?.winnings(this.winnings);
-    this.explosion(game)
+    this.explosion()
     this.winningAnimation(this.timer)
 }
 }
@@ -279,13 +271,13 @@ winningAnimation(timer, time){
     timer.start();
 }
   
-explosionStop(game){
+explosionStop(){
     this.timer?.stop();
   this.achievementMusic?.pause();
     this.image?.kill();
     this.maurice?.kill();
 }
-explosion(game){
+explosion(){
     this.maurice = new Maurice(730, 450)
     this.maurice.z = 1016
     this.add(this.maurice)
@@ -298,6 +290,18 @@ explosion(game){
 this.image.onPostUpdate = () => {
   this.image.rotation += 30 * this.dt; // rotate 30 degrees per half a second
 };
+}
+
+onPreUpdate(engine){
+     const gamepad = this.engine.input.gamepads.at(0);
+     
+    if (gamepad) {
+      if (gamepad && gamepad.isButtonPressed(Input.Buttons.Face4)) {
+        this.inputHandler(Input.Keys.Digit3);
+      } else if (gamepad && gamepad.isButtonPressed(Input.Buttons.Face2)) {
+        this.inputHandler(Input.Keys.Digit4);
+      }
+    }
 }
 }
 

@@ -10,7 +10,9 @@ export class smithScene extends Scene {
     this.game = game;
     this.goldfishPerCoin = 1; // Aantal goudvissen dat nodig is voor 1 munt
     this.coinsPerConversion = 2000; // Aantal munten dat wordt verkregen per conversie
+
   }
+
 
   onInitialize(data, engine) {
     let storedValue = localStorage.getItem("gold");
@@ -99,9 +101,15 @@ export class smithScene extends Scene {
       this.engine.goToScene("GameScene"); // Optie 2: Ga terug naar buiten
     } else if (key ===Input.Keys.D){
       this.ui?.updateLocalStorage();
+      this.input.keyboard.off("press", (evt) => {
+      this.handleInput(evt.key);
+    });
+
       this.engine.goToScene("betting"); // Optie 3: Ga naar gokken
     }
   }
+
+
 
   onPreUpdate(engine, delta) {
     let storedValue = localStorage.getItem("gold");
@@ -117,7 +125,11 @@ export class smithScene extends Scene {
         this.handleInput(Input.Keys.Digit1);
       } else if (gamepad.isButtonPressed(Input.Buttons.Face2)) {
         this.handleInput(Input.Keys.Digit2);
+      } else if (gamepad.isButtonPressed(Input.Buttons.Face3)) {
+        this.handleInput(Input.Keys.D);
       }
+      
     }
   }
+ 
 }
