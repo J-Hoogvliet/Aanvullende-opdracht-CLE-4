@@ -5,6 +5,9 @@ import { Resources } from './resources'; // Zorg ervoor dat de juiste resources 
 import { BackgroundBetting } from './backgroundBet';
 import { Icon } from './iconMaker';
 import { Explosion } from './Explosion';
+import { Maurice } from "./maurice";
+import { Game } from './game';
+
 
 export class bettingScene extends Scene {
 
@@ -24,12 +27,16 @@ export class bettingScene extends Scene {
         this.spinM = 0;
         this.spinR = 0;
        
-        this.bettingCooldown = 1000; // Cooldown period in milliseconds (2 seconds)
+        this.bettingCooldown = 2000; // Cooldown period in milliseconds (2 seconds)
         this.lastBettingTime = 0; // Timestamp of the last betting action
 
-        this.dt = 500;
+        this.dt = 500; //Delta voor timer
+
+        this.achievementMusic = Resources.Achievement;
+
+
     }
-onInitialize(engine){
+onInitialize(engine, game){
     this.disableSpin()
     this.cash;
      let storedValue = localStorage.getItem("cash");
@@ -45,6 +52,7 @@ background.z = 1002;
 
 this.ui = new UI(this);
     this.add(this.ui);
+
 
 //Maak de icoontjes aan
 this.Left = new Icon(395, 403);
@@ -69,7 +77,7 @@ this.add(this.right);
 
 this.timer = new Timer({
     repeats: false,
-     fcn: () => this.explosionStop(),
+     fcn: () => this.explosionStop(game),
         interval: 4000,
     });
 this.add(this.timer);
@@ -77,7 +85,7 @@ this.add(this.timer);
 
 
   this.input.keyboard.on("press", (evt) => {
-      this.handleInput(evt.key, this.cash);
+      this.handleInput(evt.key, this.cash, game);
     });
 
  const optie3Tekst = new Label({
@@ -102,9 +110,9 @@ this.add(this.timer);
     this.add(optie4Tekst);
 }
 
-handleInput(key, cash){
+handleInput(key, cash, game){
     if(key === Input.Keys.Enter){
-        this.beforeBetting(cash)
+        this.beforeBetting(cash, game)
 
     }
     if (key === Input.Keys.A){
@@ -113,7 +121,7 @@ handleInput(key, cash){
     }
 }
 
-beforeBetting(cash) {
+beforeBetting(cash, game) {
        
         if(cash >= 199){
             const currentTime = Date.now();
@@ -123,7 +131,7 @@ beforeBetting(cash) {
             this.ui?.bettingFee(this.bettingFee);
             this.ui?.updateLocalStorage();
             this.enableSpin()
-            this.bettingHandler()
+            this.bettingHandler(game)
             this.disableSpin()
             this.lastBettingTime = currentTime;
             
@@ -136,24 +144,25 @@ beforeBetting(cash) {
        
     }
 
-bettingHandler(){
-    this.iconLeft()
-    this.iconMiddle()
-    this.iconRight()
+bettingHandler(game){
+    this.iconRight(game)
+    this.iconLeft(game)
+    this.iconMiddle(game)
+    
    
 }
 
-iconLeft(){
+iconLeft(game){
     const left = this.Left
-    this.betting(left, this.bettingOutcomeL)
+    this.betting(left, this.bettingOutcomeL, game)
 }
-iconMiddle(){
+iconMiddle(game){
     const middle = this.Middle
-    this.betting(middle, this.bettingOutcomeM)
+    this.betting(middle, this.bettingOutcomeM, game)
 }
-iconRight(){
+iconRight(game){
     const right = this.right
-    this.betting(right, this.bettingOutcomeR)
+    this.betting(right, this.bettingOutcomeR, game)
 }
 
 
@@ -167,7 +176,7 @@ enableSpin(){
     this.canSpin = true // Spinwiel staat aan
 }
 
-betting(direction, outcome){
+betting(direction, outcome, game){
     this.lastoutcome = outcome;
     this.enableSpin
     if (this.canSpin){
@@ -207,7 +216,7 @@ betting(direction, outcome){
                         break;
                 }
                 outcome - this.lastoutcome;
-                this.saveOutcome(direction, this.lastoutcome, outcome);
+                this.saveOutcome(direction, this.lastoutcome, outcome, game);
             } else {
                 console.error('UI is not available in the current scene.');
             }
@@ -219,7 +228,7 @@ betting(direction, outcome){
     }
 
 
-saveOutcome(direction, lastoutcome, outcome){
+saveOutcome(direction, lastoutcome, outcome, game){
         
 if (direction === this.Left){
     this.spinL = lastoutcome;
@@ -234,13 +243,13 @@ if (direction === this.Left){
     this.bettingOutcomeR = outcome;
     console.log(this.spinR);
 }
-this.winningsHandler(this.spinL, this.spinM, this.spinR)
+this.winningsHandler(this.spinL, this.spinM, this.spinR, game)
 }
 
-winningsHandler (outcomeL, outcomeM, outcomeR){
+winningsHandler (outcomeL, outcomeM, outcomeR, game){
 if (outcomeL === outcomeM && outcomeL === outcomeR && outcomeM === outcomeR){
     this.ui?.winnings(this.winnings);
-    this.explosion()
+    this.explosion(game)
     this.winningAnimation(this.timer)
 }
 }
@@ -250,17 +259,24 @@ winningAnimation(timer, time){
     timer.start();
 }
   
-explosionStop(){
-    this.timer?.stop()
-    this.image?.kill()
+explosionStop(game){
+    this.timer?.stop();
+  this.achievementMusic?.pause();
+    this.image?.kill();
+    this.maurice?.kill();
 }
-explosion(){
+explosion(game){
+    this.maurice = new Maurice(730, 450)
+    this.maurice.z = 1016
+    this.add(this.maurice)
+
+    this.achievementMusic.loop = true;
+    this.achievementMusic.play();
     this.image = new Explosion(720, 450);
     this.image.z = 1005;
     this.add(this.image);
 this.image.onPostUpdate = () => {
-  this.image.rotation += 45 * this.dt; // rotate 45 degrees per half a second
-
+  this.image.rotation += 30 * this.dt; // rotate 30 degrees per half a second
 };
 }
 }
