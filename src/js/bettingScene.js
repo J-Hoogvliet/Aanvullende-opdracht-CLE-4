@@ -102,7 +102,7 @@ this.add(this.timer);
       x: 200,
       y: 780,
       z: 1004,
-      text: "Om te kunnen gokken klik op X",
+      text: "Om te kunnen gokken klik op Driehoekje",
       color: Color.Black,
       font: new Font({ size: 24, unit: FontUnit.Px }),
     });

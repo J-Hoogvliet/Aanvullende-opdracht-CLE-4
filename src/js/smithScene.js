@@ -66,7 +66,7 @@ export class smithScene extends Scene {
     const optie3Tekst = new Label({
       x: 200,
       y: 400,
-      text: "3. Ga naar gokhal. ->",
+      text: "3. Ga naar gokhal. Vierkant",
       color: Color.Black,
       font: new Font({ size: 24, unit: FontUnit.Px }),
     });
@@ -101,10 +101,6 @@ export class smithScene extends Scene {
       this.engine.goToScene("GameScene"); // Optie 2: Ga terug naar buiten
     } else if (key ===Input.Keys.D){
       this.ui?.updateLocalStorage();
-      this.input.keyboard.off("press", (evt) => {
-      this.handleInput(evt.key);
-    });
-
       this.engine.goToScene("betting"); // Optie 3: Ga naar gokken
     }
   }
